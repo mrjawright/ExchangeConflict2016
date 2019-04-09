@@ -1,3 +1,4 @@
+import sys
 import os
 import random
 import time
@@ -82,18 +83,28 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
         systems += 1
 
     while not nx.is_connected(G):
-        elements = nx.connected_component_subgraphs(G)
-        choices = []
-        for element in elements:
-            choices.append(random.choice(element.nodes()))
-        G.add_edge(choices[0], choices[1])
-
+        try:
+            elements = nx.connected_component_subgraphs(G)
+            choices = []
+            for element in elements:
+                choices.append(random.choice(element.nodes()))
+            G.add_edge(choices[0], choices[1])
+        except TypeError as te:
+            print(te)
+            print(dir(te))		
+            raise te
+        except KeyError as ke:
+            print(ke)
+            raise ke
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            
     # this places centrality in the node with the most jumps
     central = 1
     for node in G.nodes():
-        if len(G.neighbors(node)) > central:
+        if len(list(G.neighbors(node))) > central:
             central = node
-    centrality_jumps = len(G.neighbors(central))
+    centrality_jumps = len(list(G.neighbors(central)))
     print("Centrality is node {} with {} jumps...".format(central,
                                                           centrality_jumps))
 
@@ -106,7 +117,7 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
             star_names[x+1] = str(uuid.uuid4())
 
     star_names[central] = 'Centrality'
-    nx.set_node_attributes(G, 'name', star_names)
+    nx.set_node_attributes(G, 'name', hash(str(star_names)))
     G.node[central]['label_fill'] = 'red'
     return G
 
@@ -203,8 +214,11 @@ def universe(total_systems=20, deadends=0, rings=0, connectivity=1, stations='co
 
 print("Running program.")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-STARGEN_EXE_PATH = 'WinStarGen/StarGen.exe'
-STARGEN_DATA_PATH = 'WinStarGen/html/StarGen.csv'
+STARGEN_EXE='stargen'
+STARGEN_DATA_FILE='stargen'
+STARGEN_PATH = 'StarGen'
+STARGEN_EXE_PATH = os.path.join(STARGEN_PATH,STARGEN_EXE)
+STARGEN_DATA_PATH = os.path.join(STARGEN_PATH,'html')
 
 items = [('fuel ore', (1, 7, 2), (1, 10, 1), 5000, 30000),
          ('organics', (20, 90, 2), (20, 150, 1), 500, 20000),
@@ -220,16 +234,18 @@ print("Generate Planetary Systems...")
 nodes = u.nodes()
 for node in nodes:
     u.node[node]['system'] = parse_system(get_system_data(BASE_DIR,
+                                                          STARGEN_PATH,
                                                           STARGEN_EXE_PATH,
-                                                          STARGEN_DATA_PATH)
+                                                          STARGEN_DATA_PATH,
+                                                          STARGEN_DATA_FILE)
                                           )
 
 print("Generate links from sectors to planetary bodies...")
 planet_types = {}
-for node in u.nodes():
+for node in list(u.nodes()):
     for body in u.node[node]['system']['bodies']:
         body_node_label = float(str(node) + '.' + body['planet_no'])
-        u.add_node(body_node_label)
+        #u.add_node(body_node_label)
         u.add_edge(node, body_node_label)
         btype = body['type']
         if btype not in planet_types:
@@ -239,7 +255,19 @@ for node in u.nodes():
 
 print("Placing stations...")
 nodes = u.nodes()
-random.shuffle(nodes)
+try:
+	shuffled_nodes=random.sample(nodes,len(nodes))
+	nodes = shuffled_nodes
+	#random.shuffle(nodes)
+except KeyError as ke:
+	print('KeyError:')
+	print(ke.args)
+	print(len(nodes))
+	print(ke.with_traceback)
+	raise ke
+except:
+	print("Unexpected error:", sys.exc_info()[0])
+
 planetary_data = {}
 
 # gather data for use in world building...ice mining on ice planets, etc
@@ -261,6 +289,8 @@ for node in [sector for sector in nodes if isinstance(sector, int)]:
 
 print("Universe created!")
 print("Writing Universe to file...")
+if not os.path.exists(os.path.join(BASE_DIR,'mulitverse')):
+	os.mkdir(os.path.join(BASE_DIR,'mulitverse'))
 nx.readwrite.write_gpickle(u, 'multiverse/universe_body_nodes_experi.uni')
 print("Complete!")
 

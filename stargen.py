@@ -1,3 +1,4 @@
+import sys
 import random
 import os
 import subprocess
@@ -5,8 +6,10 @@ import uuid
 
 
 def get_system_data(BASE_DIR,
+                    STARGEN_PATH,
                     STARGEN_EXE_PATH,
-                    STARGEN_DATA_PATH):
+                    STARGEN_DATA_PATH,
+                    STARGEN_DATA_FILE):
     """Generate a system and read the data from the resulting csv
 
 
@@ -17,15 +20,30 @@ def get_system_data(BASE_DIR,
                                 "-n1",
                                 "-e",
                                 "-g",
+                                "-p"+os.path.join(BASE_DIR,STARGEN_DATA_PATH),
+                                "-o"+STARGEN_DATA_FILE
                                 # need code to handle moons in parser
                                 # "-M"
                                 ])
-
-    output = subprocess.call(stargen_command, cwd='WinStarGen/')
-
-    f = open(os.path.join(BASE_DIR, STARGEN_DATA_PATH), 'r')
-    data = f.readlines()
-    f.close()
+    data = ""
+    try:
+        #output = subprocess.call(stargen_command, cwd=os.path.join(BASE_DIR,STARGEN_PATH))
+        output = subprocess.call([os.path.join(BASE_DIR, STARGEN_EXE_PATH), "-s{}".format(seed), "-n1", "-e", "-g", "-p"+os.path.join(BASE_DIR,STARGEN_DATA_PATH), "-o"+STARGEN_DATA_FILE], cwd=os.path.join(BASE_DIR,STARGEN_PATH))
+        if output == 0:
+            f = open(os.path.join(BASE_DIR,STARGEN_DATA_PATH,STARGEN_DATA_FILE)+'.csv', 'r')
+            data = f.readlines()
+            f.close()
+        else:
+            raise CalledProcessError(stargen_command)
+    except FileNotFoundError as fnf:
+        print(fnf.args)
+        print(str(fnf.errno)+":"+ fnf.strerror)
+        print(fnf.filename)
+        print('with traceback %s' % fnf.with_traceback)
+        raise fnf
+    except Exception as exc:
+        print("Unexpected error:", sys.exc_info()[0])
+        raise exc
     return data
 
 
@@ -36,12 +54,14 @@ def parse_system(data):
 
     """
     data = [row.strip() for row in data]
+    system = {}
+    bodies = []
+    if len(data) == 0:
+       raise Exception("No data returned") 
 
     headers_star = data[0]
     headers_planet = data[2]
 
-    system = {}
-    bodies = []
 
     star_data = zip([col.strip().replace("'", "")
                      for col in headers_star.split(',')],
