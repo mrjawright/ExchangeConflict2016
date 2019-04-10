@@ -2,9 +2,10 @@ import random
 from collections import Counter
 
 
-def get_messages(current_node, current_player, neighbors, UNI):
+def get_messages(current_node, current_player, UNI):
     """Gets messages for a given node"""
     node_data = UNI.graph.node[current_node]
+    neighbors = UNI.graph.neighbors(current_player.current_node) 
     messages = ['\nSector  : {}\n'.format(current_node), ]
 
     node_str = str(current_node)

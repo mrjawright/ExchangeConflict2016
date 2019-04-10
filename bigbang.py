@@ -109,6 +109,7 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
     star_names[central] = 'Centrality'
     nx.set_node_attributes(G, 'name', hash(str(star_names)))
     G.node[central]['label_fill'] = 'red'
+    G.node[central]['name'] = star_names[central]
     return G
 
 

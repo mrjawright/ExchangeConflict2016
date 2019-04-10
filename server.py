@@ -1,3 +1,4 @@
+import sys
 import redis
 
 class redis_server():
@@ -13,14 +14,20 @@ class redis_server():
 		if not password == None:
 			password = password
 
+def main():
+    srvr=redis_server()
+    r = redis.StrictRedis(host=srvr.HOST, port=srvr.PORT, password=srvr.PASSWORD)
+    p = r.pubsub()
+    p.subscribe('GAMEWORLD')
 
-srvr=redis_server()
-r = redis.StrictRedis(host=srvr.HOST, port=srvr.PORT, password=srvr.PASSWORD)
-
-p = r.pubsub()
-p.subscribe('GAMEWORLD')
-
-while True:
-    for item in p.listen():
-        print(item)
-        print(item['data'])
+    while True:
+        try:
+            for item in p.listen():
+                print(item)
+                print(item['data'])
+        except KeyboardInterrupt:
+            print("KeyboardInterrupt")
+            break
+        except:
+            print("Unexpected error:", sys.exc_info()[0])
+            break
