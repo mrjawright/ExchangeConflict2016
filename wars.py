@@ -9,13 +9,14 @@ import redis
 from components import Universe, PlayerConfig, GameConfig
 from trade import trade
 import utils
-import secret
+import server 
 
 # MAIN
 U = nx.readwrite.read_gpickle('multiverse/universe_body_nodes_experi.uni')
-r = redis.StrictRedis(host=secret.HOST,
-                      port=secret.PORT,
-                      password=secret.PASSWORD)
+rserver = redis_server()
+r = redis.StrictRedis(host=rserver.HOST,
+                      port=rserver.PORT,
+                      password=rserver.PASSWORD)
 p = r.pubsub()
 
 CENTRALITY_NODE = {v: k
