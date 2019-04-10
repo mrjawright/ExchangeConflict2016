@@ -83,21 +83,11 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
         systems += 1
 
     while not nx.is_connected(G):
-        try:
-            elements = nx.connected_component_subgraphs(G)
-            choices = []
-            for element in elements:
-                choices.append(random.choice(element.nodes()))
-            G.add_edge(choices[0], choices[1])
-        except TypeError as te:
-            print(te)
-            print(dir(te))		
-            raise te
-        except KeyError as ke:
-            print(ke)
-            raise ke
-        except:
-            print("Unexpected error:", sys.exc_info()[0])
+        elements = nx.connected_component_subgraphs(G)
+        choices = []
+        for element in elements:
+            choices.append(random.choice(list(element.nodes())))
+        G.add_edge(choices[0], choices[1])
             
     # this places centrality in the node with the most jumps
     central = 1

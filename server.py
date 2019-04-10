@@ -15,7 +15,6 @@ class redis_server():
 
 
 srvr=redis_server()
-#r = redis.StrictRedis(host=secret.HOST, port=secret.PORT, password=secret.PASSWORD)
 r = redis.StrictRedis(host=srvr.HOST, port=srvr.PORT, password=srvr.PASSWORD)
 
 p = r.pubsub()
