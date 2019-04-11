@@ -3,41 +3,6 @@ import json
 import random
 import uuid
 
-from utils import bimodal
-
-
-class Commodity:
-    def __init__(self,
-                 name,
-                 price_distribution_low,
-                 price_distribution_high,
-                 unit_range_low,
-                 unit_range_high,
-                 **kwargs):
-        self.name = name
-        self.price_distribution_low = price_distribution_low
-        self.price_distribution_high = price_distribution_high
-        self.unit_range_low = unit_range_low
-        self.unit_range_high = unit_range_high
-        self.units = kwargs.get('units', None)
-        self.price_buy = kwargs.get('units', None)
-        self.price_sell = kwargs.get('units', None)
-
-    def __repr__(self):
-        return "Commodity('{}', {}, {}, {}, {})".format(self.name,
-                                                        self.price_distribution_low,
-                                                        self.price_distribution_high,
-                                                        self.unit_range_low,
-                                                        self.unit_range_high)
-
-    def generate(self):
-        self.units = random.randint(self.unit_range_low, self.unit_range_high)
-        x = round(bimodal(*self.price_distribution_low, *self.price_distribution_high), 0)
-        y = round(bimodal(*self.price_distribution_high, *self.price_distribution_low), 0)
-        self.price_buy = min(x, y)
-        self.price_sell = max(x, y)
-
-
 class PlayerConfig:
     def __init__(self,
                  initial_sector_id=1,
@@ -68,12 +33,12 @@ class GameConfig:
 class Player:
     def __init__(self, game, name, credits, current_node, ship):
         self.universe = game
+        self.experience = 0
         self.name = name
         self.wallet = credits
         self.ship_current = ship
         self.sectors_visited = Counter()
         self.current_node = current_node
-
 
 class Universe:
     def __init__(self, name, graph, config=GameConfig()):

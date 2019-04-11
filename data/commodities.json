@@ -1,0 +1,74 @@
+{
+  "items":
+    {
+      "fuel ore": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 1,
+              "high": 7,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 2,
+              "high": 10, 
+              "mode": 1
+            },
+          "unit_range_low": 5000,
+          "unit_range_high": 30000
+        },
+      "organics": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 20,
+              "high": 90,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 30,
+              "high": 180, 
+              "mode": 1
+            },
+          "unit_range_low": 500,
+          "unit_range_high": 20000
+        },
+      "equipment": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 220,
+              "high": 625,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 330,
+              "high": 1200, 
+              "mode": 1
+            },
+          "unit_range_low": 500,
+          "unit_range_high": 20000
+        },
+      "ice": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 50,
+              "high": 120,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 75,
+              "high": 180, 
+              "mode": 1
+            },
+          "unit_range_low": 500,
+          "unit_range_high": 20000
+        }
+    }
+}
+

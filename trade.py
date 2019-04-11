@@ -41,7 +41,7 @@ def trade(UNI, player, station):
             if mode.upper() == 'B':
                 wallet_max_buy = player.wallet // choice.price_sell
                 max_buy = int(min(wallet_max_buy, available_holds))
-                to_buy = input(f"We are selling up to {choice.units} of {choice.name}.  You have {available_holds} available holds.\nHow many do you want to buy? [{max_buy}] ")
+                to_buy = input(f"We are selling up to {choice.units} of {choice.name} at {choice.price_sell} per unit.  You have {available_holds} available holds.\nHow many do you want to buy? [{max_buy}] ")
                 try:
                     to_buy_number = int(to_buy)
                 except ValueError:
@@ -65,7 +65,7 @@ def trade(UNI, player, station):
 
             elif mode.upper() == 'S':
                 max_sell = player_ship['cargo'].get(choice.name, 0)
-                to_sell = input(f"We are buying {choice.name} at {choice.price_sell} per unit.  You have {max_sell} available units.\nHow many do you want to sell? [{max_sell}] ")
+                to_sell = input(f"We are buying {choice.name} at {choice.price_buy} per unit.  You have {max_sell} available units.\nHow many do you want to sell? [{max_sell}] ")
                 try:
                     to_sell_number = int(to_sell)
                 except ValueError:
@@ -74,9 +74,9 @@ def trade(UNI, player, station):
                     to_sell_number = max_sell
                 elif to_sell_number > 0 and to_sell_number <= max_sell:
                     player_ship['cargo'][choice.name] -= to_sell_number
-                    player.wallet += choice.price_buy * to_sell_number
-                    wallet_change = choice.price_sell * to_sell_number
-                    player.wallet -= wallet_change
+                    #player.wallet += choice.price_buy * to_sell_number
+                    wallet_change = choice.price_buy * to_sell_number
+                    player.wallet += wallet_change
                     station['items'][choice.name].units += to_sell_number
                     print(f'\n You sold {to_sell_number} units of {choice.name} for {wallet_change}.')
                     show_items(station)

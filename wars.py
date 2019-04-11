@@ -45,6 +45,8 @@ def warp(current_player, command, neighbors):
          target_node = float(command)
     if target_node in neighbors:
         current_player.current_node = target_node
+        #if not target_node in current_player.sectors_visited:
+            #current_player.experience += 1
         current_player.sectors_visited.update({current_player.current_node: 1})
     else:
         print("{} is an invalid jump selection...try again!".format(target_node))

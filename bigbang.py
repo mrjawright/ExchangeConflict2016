@@ -7,8 +7,7 @@ import uuid
 import networkx as nx
 
 from stargen import get_system_data, parse_system
-from components import Commodity
-
+from spaceport import spaceport
 
 def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
     G = nx.Graph()
@@ -43,7 +42,7 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
             dead.append(system_id)
             continue
         if rings != 0:
-            ring_size = random.choice([3, 3, 5, 5, 5, 5, 5, 7, 7, 9])
+            ring_size = random.choice([3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 9, 11])
             ring_status = 'incomplete'
             ring = []
             while ring_status != 'complete':
@@ -112,40 +111,7 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
     G.node[central]['name'] = star_names[central]
     return G
 
-
-def stationgen(items):
-    """Generates station."""
-    commodities = [Commodity(*item) for item in items]
-    station = {'items': {commodity.name: commodity
-                         for commodity in commodities}}
-
-    items = station['items']
-    for item in items:
-        items[item].generate()
-
-    station['tags'] = []
-
-    for item in items:
-        item = items[item]
-        if item.price_buy > item.price_sell:
-            station['tags'].append("INVALID")
-
-    if station['items']['equipment'].price_buy < 400 and station['items']['equipment'].price_sell < 250:
-        station['tags'].append("PRODUCTION")
-
-    if station['items']['organics'].price_sell < 80:
-        station['tags'].append("ORBITAL HYDROPONICS")
-
-    if station['items']['ice'].price_sell < 115:
-        station['tags'].append("ICE MINING")
-
-    if station['items']['organics'].price_buy > 30 and station['items']['ice'].price_buy > 70 and station['items']['fuel ore'].price_buy >= 4 and station['items']['equipment'].price_buy > 500:
-        station['tags'].append("SUPER BUY")
-
-    return station
-
-
-def getstations(target=30, total_systems=100, stock_volumes=.1, items=None):
+def getstations(target=30, total_systems=100, stock_volumes=.1):
     start = time.time()
     stations = []
 
@@ -158,26 +124,25 @@ def getstations(target=30, total_systems=100, stock_volumes=.1, items=None):
     mines = 0
     mines_target = 5 + total_systems / 100
     while len(stations) < target:
-        station = stationgen(items)
+        station = spaceport(station = spaceport.stationgen())
         if superbuys < superbuys_target:
-            if 'SUPER BUY' in station['tags']:
+            if 'SUPER BUY' in station.tags:
                 stations.append(station)
                 superbuys += 1
         elif superbuys >= superbuys_target and productions < productions_target:
-            if 'PRODUCTION' in station['tags']:
+            if 'PRODUCTION' in station.tags:
                 stations.append(station)
                 productions += 1
         elif superbuys >= superbuys_target and productions >= productions_target and mines < mines_target:
-            if 'ORBITAL HYDROPONICS' in station['tags'] or 'ICE MINING' in station['tags']:
+            if 'ORBITAL HYDROPONICS' in station.tags or 'ICE MINING' in station.tags:
                 stations.append(station)
-        elif superbuys >= superbuys_target and productions >= productions_target and mines >= mines_target and "INVALID" not in station['tags']:
+        elif superbuys >= superbuys_target and productions >= productions_target and mines >= mines_target and "INVALID" not in station.tags:
             stations.append(station)
     stop = time.time()
     print("Stations took {} seconds to generate...".format(stop - start))
     return stations
 
-
-def universe(total_systems=20, deadends=0, rings=0, connectivity=1, stations='common', stock_volumes='normal', items=None):
+def universe(total_systems=20, deadends=0, rings=0, connectivity=1, stations='common', stock_volumes='normal'):
     station_density = {'sparse': .1,
                        'uncommmon': .15,
                        'common': .3,
@@ -195,8 +160,7 @@ def universe(total_systems=20, deadends=0, rings=0, connectivity=1, stations='co
     print("Creating stations...")
     stations = getstations(target=station_density[stations] * total_systems,
                            total_systems=total_systems,
-                           stock_volumes=stock[stock_volumes],
-                           items=items)
+                           stock_volumes=stock[stock_volumes])
     return u, stations
 
 
@@ -211,14 +175,8 @@ STARGEN_PATH = 'StarGen'
 STARGEN_EXE_PATH = os.path.join(STARGEN_PATH,STARGEN_EXE)
 STARGEN_DATA_PATH = os.path.join(STARGEN_PATH,'html')
 
-items = [('fuel ore', (1, 7, 2), (1, 10, 1), 5000, 30000),
-         ('organics', (20, 90, 2), (20, 150, 1), 500, 20000),
-         ('equipment', (220, 625, 2), (220, 1200, 1), 500, 20000),
-         ('ice', (50, 150, 2), (50, 120, 1), 500, 20000)
-         ]
-
 print("Generating Universe...")
-u, s = universe(25, 5, 1, 1, 'common', 'normal', items)
+u, s = universe(50, 10, 3, 1, 'frequent', 'normal')
 
 print("Generate Planetary Systems...")
 # observed system types: 'Rock', 'Terrestrial', 'GasDwarf', 'Sub-Jovian', 'Jovian', 'Ice', 'Venusian', 'Martian', '1Face', 'Water', 'Asteroids'
@@ -273,15 +231,15 @@ for node in [sector for sector in nodes if isinstance(sector, int)]:
     if s != []:
         new_station = s.pop()
         # If it is an ice mining station place it on an appropriate body type
-        if 'ICE MINING' in new_station['tags']:
+        if 'ICE MINING' in new_station.tags:
             node = planetary_data['ice_sources'].pop()
         u.node[node]['station'] = new_station
         u.node[node]['fill'] = 'green'
 
 print("Universe created!")
 print("Writing Universe to file...")
-if not os.path.exists(os.path.join(BASE_DIR,'mulitverse')):
-	os.mkdir(os.path.join(BASE_DIR,'mulitverse'))
+if not os.path.exists(os.path.join(BASE_DIR,'multiverse')):
+	os.mkdir(os.path.join(BASE_DIR,'multiverse'))
 nx.readwrite.write_gpickle(u, 'multiverse/universe_body_nodes_experi.uni')
 print("Complete!")
 
