@@ -450,7 +450,6 @@ void csv_describe_system(FILE *file, planet_pointer innermost_planet, int do_gas
 
 void csv_thumbnails(FILE*	file, 
 					char*	url_path,
-					char*	subdir,
 					char*	file_name,
 					char*	csv_url)
 {
@@ -847,7 +846,7 @@ void print_description(FILE*			file,
 		long double	ice        = (planet->ice_cover * 100.0);
 		long double	gravity    = planet->surf_grav;
 		
-		fprintf (file, opening);
+		fprintf (file, "%s", opening);
 		
 		if (gravity < .8)				LPRINT ("Low-G")	/* .8 gees */
 		else if (gravity > 1.2)			LPRINT ("High-G")
@@ -924,7 +923,7 @@ void print_description(FILE*			file,
 		 || (planet->resonant_period))
 			LPRINT ("1-Face");
 		
-		fprintf (file, closing);
+		fprintf (file, "%s", closing);
 	}
 }
 

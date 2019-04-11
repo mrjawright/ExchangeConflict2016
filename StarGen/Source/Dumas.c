@@ -297,7 +297,8 @@ static void	dumasComplain (char *complaint,
 
 	*buffer = '\0';
 
-	if (procureur && *procureur)
+	//if (procureur && *procureur)
+	if (*procureur)
 	{
 		if (liberator_name && *liberator)
 		{
@@ -318,7 +319,8 @@ static void	dumasComplain (char *complaint,
 	}
 	else
 	{
-		if (liberator && *liberator)
+		//if (liberator && *liberator)
+		if (*liberator)
 		{
 			sprintf (buffer, "free: %s, (%ld): %s",
 					 liberator,
@@ -729,7 +731,7 @@ void dumasDumpHoard ()
 	long		i;
 	dumasDIf	*segment;
 	char		buffer[MAX_DUMP+1];
-	int			max, j;
+	int			max;
 
 	if (DUMAS_ACTIVE & dumasFlags)
 	{
@@ -743,7 +745,7 @@ void dumasDumpHoard ()
 			if (max > MAX_DUMP)
 				max = MAX_DUMP;
 			
-			for (j = 0; j < max; j++) 
+			for (int j = 0; j < max; j++) 
 			{
 				buffer[j] = dumasPrintable[segment->data[j]];
 			}

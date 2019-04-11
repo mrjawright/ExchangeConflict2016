@@ -1,7 +1,7 @@
 char *engineer_notation(long double, int);
 void text_describe_system(planet_pointer, int, long);
 void csv_describe_system(FILE *, planet_pointer, int, long);
-void csv_thumbnails(FILE*, char*, char*, char*, char*);
+void csv_thumbnails(FILE*, char*, char*, char*);
 char *type_string(planet_type);
 void create_svg_file (FILE *, planet_pointer, char *, char *, char *, char *);
 FILE *open_csv_file (char *, char *);

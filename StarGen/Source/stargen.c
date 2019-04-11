@@ -1562,7 +1562,7 @@ int stargen (actions		action,
 		}
 	
 		if (thumbnails != NULL)
-			csv_thumbnails(thumbnails, url_path, subdir, csv_file_name, csv_url);
+			csv_thumbnails(thumbnails, url_path, csv_file_name, csv_url);
 	}
 	
 	for (index = 0; index < system_count; index++)
