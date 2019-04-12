@@ -241,6 +241,10 @@ print("Writing Universe to file...")
 if not os.path.exists(os.path.join(BASE_DIR,'multiverse')):
 	os.mkdir(os.path.join(BASE_DIR,'multiverse'))
 nx.readwrite.write_gpickle(u, 'multiverse/universe_body_nodes_experi.uni')
+print("Removing saved games")
+if os.path.isfile('multiverse/UNISAVE.pkl'):
+	os.remove('multiverse/UNISAVE.pkl') 
+
 print("Complete!")
 
 

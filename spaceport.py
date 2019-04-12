@@ -1,4 +1,3 @@
-import components
 import commodities
 from commodities import commodity
 from commodities import commodities

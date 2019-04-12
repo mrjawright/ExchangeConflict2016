@@ -9,8 +9,9 @@ def show_items(station, get_inputs=False):
         commodity_choices = {}
         counter = 1
         valid_item_inputs = []
-    for item in station['items']:
-        item = station['items'][item]
+    #for item in station['items']:
+    for item in station.items:
+        item = station.items[item]
         if get_inputs:
             commodity_choices[counter] = item.name
             valid_item_inputs.append(str(counter))
@@ -36,51 +37,64 @@ def trade(UNI, player, station):
         print(f'\nYou have {player.wallet} credits and {available_holds} empty cargo holds.\n')
         if trade in valid_item_inputs:
             # get commodity data
-            choice = station['items'][commodity_choices[int(trade)]]
-            mode = input("Do you want to (B)uy or (S)ell?")
-            if mode.upper() == 'B':
-                wallet_max_buy = player.wallet // choice.price_sell
-                max_buy = int(min(wallet_max_buy, available_holds))
-                to_buy = input(f"We are selling up to {choice.units} of {choice.name} at {choice.price_sell} per unit.  You have {available_holds} available holds.\nHow many do you want to buy? [{max_buy}] ")
-                try:
-                    to_buy_number = int(to_buy)
-                except ValueError:
-                    to_buy_number = 0
-                if to_buy == '':
-                    to_buy_number = max_buy
-                if to_buy_number > 0 and to_buy_number <= max_buy:
-                    if choice.name not in player_ship['cargo']:
-                        player_ship['cargo'][choice.name] = to_buy_number
+            choice = station.items[commodity_choices[int(trade)]]
+            mode=''
+            while not mode.upper() in ['B', 'S']: 
+                mode = input("Do you want to (B)uy or (S)ell?")
+                if mode.upper() == 'B':
+                    wallet_max_buy = player.wallet // choice.price_sell
+                    max_buy = int(min(wallet_max_buy, available_holds))
+                    to_buy = input(f"We are selling up to {choice.units} of {choice.name} at {choice.price_sell} per unit.  You have {available_holds} available holds.\nHow many do you want to buy? [{max_buy}] ")
+                    if to_buy == '':
+                        to_buy = max_buy
+                    try:
+                        to_buy_number = int(to_buy)
+                    except ValueError:
+                        to_buy_number = 0
+                    if to_buy_number > 0 and to_buy_number <= max_buy:
+                        if choice.name not in player_ship['cargo']:
+                            player_ship['cargo'][choice.name] = to_buy_number
+                        else:
+                            player_ship['cargo'][choice.name] += to_buy_number
+
+                        wallet_change = choice.price_sell * to_buy_number
+                        player.wallet -= wallet_change
+                        station.items[choice.name].units -= to_buy_number
+                        print(f'\n You bought {to_buy_number} units of {choice.name} for {wallet_change}.')
+                        show_items(station)
+                    elif to_buy_number == 0:
+                        print("\nStop wasting my time!\n")
                     else:
-                        player_ship['cargo'][choice.name] += to_buy_number
-
-                    wallet_change = choice.price_sell * to_buy_number
-                    player.wallet -= wallet_change
-                    station['items'][choice.name].units -= to_buy_number
-                    print(f'\n You bought {to_buy_number} units of {choice.name} for {wallet_change}.')
-                    show_items(station)
-                else:
-                    print("\nThat's not a valid amount!\n")
-                    show_items(station)
-
-            elif mode.upper() == 'S':
-                max_sell = player_ship['cargo'].get(choice.name, 0)
-                to_sell = input(f"We are buying {choice.name} at {choice.price_buy} per unit.  You have {max_sell} available units.\nHow many do you want to sell? [{max_sell}] ")
-                try:
-                    to_sell_number = int(to_sell)
-                except ValueError:
-                    to_sell_number = 0
-                if to_sell == '':
-                    to_sell_number = max_sell
-                elif to_sell_number > 0 and to_sell_number <= max_sell:
-                    player_ship['cargo'][choice.name] -= to_sell_number
+                        if to_buy_number > wallet_max_buy:
+                            print("\nYou can't afford it!\n")
+                        elif to_buy_number > available_holds:
+                            print("\nYou don't have enough holds!\n")
+                        else:
+                            print("\nI'm not sure what you mean by that.\n")
+                        show_items(station)
+                elif mode.upper() == 'S':
+                    max_sell = player_ship['cargo'].get(choice.name, 0)
+                    to_sell = input(f"We are buying {choice.name} at {choice.price_buy} per unit.  You have {max_sell} available units.\nHow many do you want to sell? [{max_sell}] ")
+                    if to_sell == '':
+                        to_sell = max_sell
+                    try:
+                       to_sell_number = int(to_sell)
+                    except ValueError:
+                        to_sell_number = 0
+                    if to_sell_number > 0 and to_sell_number <= max_sell:
+                        player_ship['cargo'][choice.name] -= to_sell_number
                     #player.wallet += choice.price_buy * to_sell_number
-                    wallet_change = choice.price_buy * to_sell_number
-                    player.wallet += wallet_change
-                    station['items'][choice.name].units += to_sell_number
-                    print(f'\n You sold {to_sell_number} units of {choice.name} for {wallet_change}.')
-                    show_items(station)
-                else:
-                    print("\nThat's not a valid amount!\n")
-                    show_items(station)
+                        wallet_change = choice.price_buy * to_sell_number
+                        player.wallet += wallet_change
+                        station.items[choice.name].units += to_sell_number
+                        print(f'\n You sold {to_sell_number} units of {choice.name} for {wallet_change}.')
+                        show_items(station)
+                    elif to_sell_number == 0:
+                        print("\nStop wasting my time!\n")
+                    else:
+                        if to_sell_number > max_sell:
+                            print("\nYou don't have that much!\n")
+                        else:
+                            print("\nI don't know what you mean by that.\n")
+                        show_items(station)
 

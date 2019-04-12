@@ -6,7 +6,9 @@ import uuid
 import networkx as nx
 import redis
 
-from components import Universe, PlayerConfig, GameConfig
+from universe import Universe
+from player import PlayersConfig
+from game import GameConfig
 from trade import trade
 import utils
 import server 
@@ -69,7 +71,7 @@ def main():
     if os.path.isfile(UNI_PATH):
         UNI = pickle.load(open(UNI_PATH, 'rb'))
     else:
-        UNI = Universe('New Game', U, GameConfig(PlayerConfig(CENTRALITY_NODE)))
+        UNI = Universe('New Game', U, GameConfig(PlayersConfig(CENTRALITY_NODE)))
  
     if len(UNI.players) == 0:
         PLAYER = input('Enter a new player name: ')
