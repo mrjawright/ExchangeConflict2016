@@ -2,6 +2,8 @@
 WinStarGen/
 multiverse/
 StarGen/html/stargen.csv
+StarGen/Source/stargen
+StarGen/Source/*.o
 # PyCharm
 .idea/
 
