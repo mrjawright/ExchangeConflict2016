@@ -1,4 +1,5 @@
 from datetime import datetime
+from cryptography.fernet import Fernet
 import os
 import pickle
 import uuid
@@ -75,17 +76,36 @@ def main():
  
     if len(UNI.players) == 0:
         PLAYER = input('Enter a new player name: ')
-        UNI.create_player(PLAYER)
+        PASSWORD = input('Password:')
+        key = Fernet.generate_key()       
+        cipher_suite = Fernet(key)
+        ciphered_text = cipher_suite.encrypt(PASSWORD.encode('utf-8'))
+        UNI.create_player(PLAYER, ciphered_text, key)
     else:
         selection = "" 
         PLAYER = None
+        PASSWORD = None
         players = UNI.players.keys()
         while selection.upper() not in ['N', 'E']:
             selection = input("(N)ew player or (E)xisting player? ")
         if selection.upper() == 'E':
-            print("Players: {}".format(UNI.players.keys()))
+            #print("Players: {}".format(UNI.players.keys()))
             while PLAYER not in players:
                 PLAYER = input('Enter valid player name: ')
+            PASSWORD = input('Password:')
+            selected_player = UNI.players[PLAYER]
+            cipher_suite = Fernet(selected_player.key)
+            unencrypted_password = cipher_suite.decrypt(selected_player.password)
+            attempt=1
+            while not PASSWORD.encode('utf-8') == unencrypted_password and attempt<3:
+                attempt +=1
+                print ('Wrong! Try Again!')
+                PASSWORD = input('Password:')
+            if not PASSWORD.encode('utf-8') == unencrypted_password:
+                command = 'Q'
+                PLAYER = None
+            else:
+                print('{}: Authorization accepted'.format(PLAYER))
         elif selection.upper() == 'N':
             while PLAYER not in players:
                 players = UNI.players.keys()
@@ -94,14 +114,18 @@ def main():
                     print("You can't use that name!")
                     PLAYER = None
                 else:
-                    UNI.create_player(PLAYER)
+                    PASSWORD = input('Password:')
+                    key = Fernet.generate_key()       
+                    cipher_suite = Fernet(key)
+                    ciphered_text = cipher_suite.encrypt(PASSWORD.encode('utf-8'))
+                    UNI.create_player(PLAYER, ciphered_text, key)
                 players = UNI.players.keys()
-
-    current_player = UNI.players[PLAYER]
-    p.subscribe('GAMEWORLD')
-    r.publish('GAMEWORLD', '{} joins the game... {}'.format(current_player.name, uuid.uuid4()))
-
-    command = None
+    current_player = None
+    if not PLAYER == None:
+        current_player = UNI.players[PLAYER]
+        p.subscribe('GAMEWORLD')
+        r.publish('GAMEWORLD', '{} joins the game... {}'.format(current_player.name, uuid.uuid4()))
+        command = None
 
     while command != 'Q':
         neighbors = UNI.graph.neighbors(current_player.current_node)
@@ -125,10 +149,11 @@ def main():
             help()
         else:
             print("Invalid command!")
-
+    
     pickle.dump(UNI, open(UNI_PATH, 'wb'))
-    r.publish('GAMEWORLD', '{} leaves the game...'.format(current_player.name))
-    p.unsubscribe()
-    print(UNI.players)
+    if not current_player == None:
+        r.publish('GAMEWORLD', '{} leaves the game...'.format(current_player.name))
+        p.unsubscribe()
+        print(UNI.players)
 
 main()

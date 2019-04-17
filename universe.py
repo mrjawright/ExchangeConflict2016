@@ -14,11 +14,13 @@ class Universe:
         self.players = {}
         self.ships = {}
 
-    def create_player(self, name):
+    def create_player(self, name, password, key):
         """Add a new player to the game"""
         sid = uuid.uuid4()
         self.players[name] = Player(self,
                                     name,
+                                    password,
+                                    key,
                                     credits=self.config.player.initial_credits,
                                     current_node=self.config.player.initial_sector_id,
                                     ship=sid)
