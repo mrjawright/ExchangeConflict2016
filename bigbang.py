@@ -3,6 +3,7 @@ import os
 import random
 import time
 import uuid
+import pickle
 
 import networkx as nx
 
@@ -111,7 +112,7 @@ def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
     G.node[central]['name'] = star_names[central]
     return G
 
-def getstations(target=30, total_systems=100, stock_volumes=.1):
+def getstations(target=30, total_systems=1000, stock_volumes=.1):
     start = time.time()
     stations = []
 
@@ -241,10 +242,13 @@ print("Writing Universe to file...")
 if not os.path.exists(os.path.join(BASE_DIR,'multiverse')):
 	os.mkdir(os.path.join(BASE_DIR,'multiverse'))
 nx.readwrite.write_gpickle(u, 'multiverse/universe_body_nodes_experi.uni')
-print("Removing saved games")
-if os.path.isfile('multiverse/UNISAVE.pkl'):
-	os.remove('multiverse/UNISAVE.pkl') 
-
+print("Resetting players")
+UNI_PATH = 'multiverse/UNISAVE.pkl'
+if os.path.isfile(UNI_PATH):
+    UNI = pickle.load(open(UNI_PATH, 'rb'))
+    for key in UNI.players.keys():
+        UNI.reset_player(key)    
+        pickle.dump(UNI, open(UNI_PATH, 'wb'))
 print("Complete!")
 
 

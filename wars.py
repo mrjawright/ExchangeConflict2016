@@ -15,7 +15,6 @@ import utils
 import server 
 
 def cargo(current_player):
-    #ship = UNI.ships[current_player.ship_current]
     print(f"Cargo: {ship['cargo']}\n Wallet: {current_player.wallet}")
 
 def help():

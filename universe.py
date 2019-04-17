@@ -26,6 +26,19 @@ class Universe:
                                     ship=sid)
         self.create_ship('merchant_cruiser', sid)
 
+    def reset_player(self, name):
+        """Add a new player to the game"""
+        sid = uuid.uuid4()
+        player_to_reset = self.players[name]
+        self.players[name] = Player(self,
+                                    player_to_reset.name,
+                                    player_to_reset.password,
+                                    player_to_reset.key,
+                                    credits=self.config.player.initial_credits,
+                                    current_node=self.config.player.initial_sector_id,
+                                    ship=sid)
+        self.create_ship('merchant_cruiser', sid)
+
     def create_ship(self, stype, sid):
         ship = {}
         for k, v in self.config.ships.types[stype].items():
