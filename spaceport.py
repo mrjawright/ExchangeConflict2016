@@ -1,7 +1,6 @@
-import commodities
 from commodities import commodity
 from commodities import commodities
-
+from random import random
 import config
 import json
 
@@ -92,35 +91,105 @@ class spaceport(object):
                         print("\nThat's not a valid amount!\n")
                         show_items(self)
 
+    def gettags(station):
+        f = open('data/station_tags.json', 'r')
+        tags_config_data = json.loads(f.read())['tags']
+        f.close()
+        for key in tags_config_data:
+            use_tag = True
+            for type in tags_config_data[key]:
+                attr = tags_config_data[key][type]
+                if type in station['items']:
+                    station_items = station['items'][type]
+                    #is this type relevant to the tag? were any checks used?
+                    check_type = False
+                    #if so, did the checks pass?
+                    #we prime with true and use AND joins so one success doesn't give a false positive
+                    type_check_passed = True
+                    #print("type: %s buy_min: %s buy_max: %s price_buy: %s" % (type, attr['buy_min'],attr['buy_max'],station_items.price_buy))
+                    #print("type: %s sell_min: %s sell_max: %s price_sell: %s" % (type, attr['sell_min'],attr['sell_max'],station_items.price_sell))
+                    if attr['buy_min']>0: 
+                        check_type = True
+                        type_check_passed = type_check_passed and (attr['buy_min'] < station_items.price_buy)
+                    if attr['buy_max']>0:
+                        check_type = True
+                        type_check_passed = type_check_passed and (attr['buy_max'] > station_items.price_buy)
+                    if attr['sell_min']>0:
+                        check_type = True
+                        type_check_passed = type_check_passed and (attr['sell_min'] < station_items.price_sell)
+                    if attr['sell_max']>0:
+                        check_type = True
+                        type_check_passed = type_check_passed and (attr['sell_max'] > station_items.price_sell)
+                    #print("type:%s used:%s passed:%s" % (type, check_type, type_check_passed))
+                    if check_type:
+                        use_tag = (use_tag and type_check_passed)
+            #print("%s %s"% (key,use_tag))
+            if use_tag and not key in station['tags']:
+                station['tags'].append(key)
+        #print(station['tags'])
+        return station['tags']
+
     @staticmethod
     def stationgen():
         """Generates station."""
         port_commodities = commodities().items
+        port_upgrades = commodities('data/upgrades.json').items
 
         station = {'items': {commodity.name: commodity
-                             for commodity in port_commodities}}
+                             for commodity in port_commodities},
+                   'upgrades': {upgrade.name: upgrade
+                                for upgrade in port_upgrades} }
         items = station['items']
         for item in items:
             items[item].generate()
         station['tags'] = []
+        station['has_hangar'] = False 
+        hangar_type=None
         for item in items:
             item = items[item]
             if item.price_buy > item.price_sell:
-                station['tags'].append("INVALID")
-        if station['items']['equipment'].price_buy < 400 and station['items']['equipment'].price_sell < 250:
-            station['tags'].append("PRODUCTION")
-        if station['items']['organics'].price_sell < 80:
-            station['tags'].append("ORBITAL HYDROPONICS")
-        if station['items']['ice'].price_sell < 115:
-            station['tags'].append("ICE MINING")
-        if station['items']['organics'].price_buy > 30 and station['items']['ice'].price_buy > 70 and station['items']['fuel ore'].price_buy >= 4 and station['items']['equipment'].price_buy > 500:
-            station['tags'].append("SUPER BUY")
+                item.price_sell = round(item.price_buy * uniform(1,3))
+        station['tags'] = spaceport.gettags(station)
+        if "PRODUCTION" in station['tags']:
+            if random()>0.5:
+                hangar_type="SCRAPYARD"
+                station['has_hangar'] = True
+                upgrades = station['upgrades']
+                for item in upgrades:
+                    upgrades[item].generate()
+        if "ORBITAL HYDROPONICS" in station['tags']:
+            if random()>0.75 and not station['has_hangar']:
+                hangar_type = "GARAGE"
+                station['has_hangar'] = True
+                upgrades = station['upgrades']
+                for item in upgrades:
+                    upgrades[item].generate()
+        if "ICE MINING" in station['tags']:
+            if random()>0.66 and not station['has_hangar']:
+                hangar_type = "MAINTENANCE"
+                station['has_hangar'] = True
+                upgrades = station['upgrades']
+                for item in upgrades:
+                    upgrades[item].generate()
+        if "SUPER BUY" in station['tags']:
+            if not station['has_hangar']:
+                hangar_type = "SPACE STATION"
+                station['has_hangar'] = True
+                upgrades = station['upgrades']
+                for item in upgrades:
+                    upgrades[item].generate()
+        if station['has_hangar']:
+            station['tags'].append(hangar_type)
+
+        print(station['tags'])
         return station
 
     def __init__(self, node = None, station = None):
         if not node == None:
             station = stationgen(node)
         self.items = station['items']
+        self.has_hangar = station['has_hangar']
+        self.upgrades = station['upgrades']
         self.tags = station['tags']
 
 

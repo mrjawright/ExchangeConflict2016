@@ -1,0 +1,66 @@
+{
+  "tags":
+    {
+        "PRODUCTION":
+        {
+            "equipment":
+            {
+                "buy_min": 0,
+                "buy_max": 400,
+                "sell_min": 0,
+                "sell_max": 250
+            }
+        },
+        "ORBITAL HYDROPONICS":
+        {
+            "organics":
+            {
+                "buy_min": 0,
+                "buy_max": 0,
+                "sell_min": 0,
+                "sell_max": 80
+            }
+        },
+        "ICE MINING":
+        {
+            "ice":
+            {
+                "buy_min": 0,
+                "buy_max": 0,
+                "sell_min": 0,
+                "sell_max": 115
+            }
+        },
+        "SUPER BUY":
+        {
+            "organics":
+            {
+                "buy_min": 30,
+                "buy_max": 0,
+                "sell_min": 0,
+                "sell_max": 0
+            },
+            "ice":
+            {
+                "buy_min": 70,
+                "buy_max": 0,
+                "sell_min": 0,
+                "sell_max": 0
+            },
+            "fuel_ore":
+            {
+                "buy_min": 4,
+                "buy_max": 0,
+                "sell_min": 0,
+                "sell_max": 0
+            },
+            "equipment":
+            {
+                "buy_min": 500,
+                "buy_max": 0,
+                "sell_min": 0,
+                "sell_max": 0
+            }
+        }
+    }
+}

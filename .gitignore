@@ -1,9 +1,11 @@
 # Project Specific
 WinStarGen/
 multiverse/
-StarGen/html/stargen.csv
+StarGen/html/
+#StarGen/html/stargen.csv
 StarGen/Source/stargen
 StarGen/Source/*.o
+requirements.old
 # PyCharm
 .idea/
 

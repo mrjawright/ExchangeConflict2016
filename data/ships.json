@@ -1,10 +1,22 @@
 {
   "types":
     {
+      "escape_pod": {
+        "holds_default": 10,
+        "shields_default": 20,
+        "fighters_default": 0,
+        "holds_max": 10,
+        "shield_max": 20,
+        "fighters_max": 0,
+        "hull_cost": 1000
+      },
       "merchant_cruiser": {
-        "holds_min": 20,
+        "holds_default": 20,
+        "shields_default": 40,
+        "fighterss_default": 40,
         "holds_max": 75,
         "shield_max": 400,
+        "fighters_max": 400,
         "hull_cost": 10000
       }
     }

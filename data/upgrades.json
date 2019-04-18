@@ -1,0 +1,57 @@
+{
+  "items":
+    {
+      "fighters": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 3,
+              "high": 10,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 5,
+              "high": 12, 
+              "mode": 1
+            },
+          "unit_range_low": 500,
+          "unit_range_high": 3000
+        },
+      "holds": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 3,
+              "high": 10,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 5,
+              "high": 12, 
+              "mode": 1
+            },
+          "unit_range_low": 500,
+          "unit_range_high": 3000
+        },
+      "shields": 
+        {
+          "price_distribution_low": 
+            {
+              "low": 3,
+              "high": 10,
+              "mode": 2
+            },
+          "price_distribution_high": 
+            {
+              "low": 5,
+              "high": 12, 
+              "mode": 1
+            },
+          "unit_range_low": 500,
+          "unit_range_high": 2000
+        }
+    }
+}
+
