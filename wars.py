@@ -3,14 +3,15 @@ from cryptography.fernet import Fernet
 import os
 import pickle
 import uuid
-
+from getpass import getpass
 import networkx as nx
 import redis
-
+from random import random
 from universe import Universe
 from player import PlayersConfig
 from game import GameConfig
-from trade import trade
+import spaceport
+#from trade import trade
 import utils
 import server 
 
@@ -20,25 +21,41 @@ def cargo(current_player):
 def help():
     print("\n  This is the help menu.  P to trade at a Port, Q to quit, V to view jump history. C to show your wallet and cargo. S to use the scanner on planets and stars.")
 
+def prompt(node, choices):
+    clock = datetime.now().strftime('%H:%M:%S')
+    menu = ''
+    for c in choices:
+        menu+=c
+    selection= input("Command [TL={}]:[{}] [{}](?=Help) : ".format(clock,node,menu))
+    return selection.upper()
+
+
 def port(current_player, UNI):
     node_data = UNI.graph.node[current_player.current_node]
     station = node_data.get('station', None)
+    message = ''
     if station is not None:
+        choices = ['T','Q']
+        t_message = "\n<T>rade at this Port"
+        if station.has_hangar:
+            choices = ['D','T','Q']
+            message += "\n<D>ock to buy upgrades"
+        message += t_message
+        message += "\n<Q>uit, nevermind"
         selection = ''
-        print("\n<T> Trade at this Port\n<Q> Quit, nevermind")
-        while selection.upper() not in ['T', 'Q']:
-            selection = input('Enter your choice? ')
+        while  not selection.upper() == 'Q' :
+            print(message)
+            selection = prompt(current_player.current_node, choices)
+            if selection.upper() == 'D':
+                station.dock(UNI, current_player)
             if selection.upper() == 'T':
-                trade(UNI, current_player, station)
+                station.trade(UNI, current_player)
     else:
         print("No ports in this sector!")
 
 def scan(current_player, UNI):
     print("Scanning....")
     utils.scanner(current_player.current_node, UNI)
-
-def view_history(current_player):
-    print("Jump history: {}".format(current_player.sectors_visited))
 
 def warp(current_player, command, neighbors):
     try:
@@ -52,6 +69,46 @@ def warp(current_player, command, neighbors):
         current_player.sectors_visited.update({current_player.current_node: 1})
     else:
         print("{} is an invalid jump selection...try again!".format(target_node))
+
+def new_player(universe):
+    PLAYER = ""
+    command = ""
+    attempt = 0
+    while PLAYER == "" and attempt <3:
+        attempt += 1
+        PLAYER = input('Enter a new player name: ')
+        if PLAYER == "":
+            print("Player name can not be empty")
+        if PLAYER in universe.players:
+            print("You can't use that name!")
+            PLAYER = "" 
+    else:
+        if not PLAYER == "":
+            if PLAYER in universe.players:
+                print("You can't use that name!")
+                PLAYER = None
+            else:
+                PASSWORD = ""
+                attempt = 0
+                while PASSWORD == "" and attempt<3: 
+                    attempt += 1
+                    PASSWORD = getpass('Password:')
+                    if PASSWORD == "":
+                        print("Password can not be empty")
+                else:
+                    if not PASSWORD == "":
+                        key = Fernet.generate_key()       
+                        cipher_suite = Fernet(key)
+                        ciphered_text = cipher_suite.encrypt(PASSWORD.encode('utf-8'))
+                        universe.create_player(PLAYER, ciphered_text, key)
+                    else:   
+                        PLAYER = None
+                        command = 'Q'
+        else:
+            PLAYER = None
+            command = 'Q'    
+    return PLAYER,command
+
 
 def main():
 # MAIN
@@ -74,51 +131,46 @@ def main():
         UNI = Universe('New Game', U, GameConfig(PlayersConfig(CENTRALITY_NODE)))
  
     if len(UNI.players) == 0:
-        PLAYER = input('Enter a new player name: ')
-        PASSWORD = input('Password:')
-        key = Fernet.generate_key()       
-        cipher_suite = Fernet(key)
-        ciphered_text = cipher_suite.encrypt(PASSWORD.encode('utf-8'))
-        UNI.create_player(PLAYER, ciphered_text, key)
+        (PLAYER,command) = new_player(UNI)
     else:
         selection = "" 
         PLAYER = None
         PASSWORD = None
         players = UNI.players.keys()
-        while selection.upper() not in ['N', 'E']:
+        attempt=0
+        while selection.upper() not in ['N', 'E'] and attempt<=3:
             selection = input("(N)ew player or (E)xisting player? ")
+            attempt += 1
+        else:
+            if attempt > 3:
+                PLAYER = None
+                command = 'Q'
         if selection.upper() == 'E':
-            #print("Players: {}".format(UNI.players.keys()))
-            while PLAYER not in players:
+            attempt=0
+            while PLAYER not in players and attempt <=3:
                 PLAYER = input('Enter valid player name: ')
-            PASSWORD = input('Password:')
+                attempt += 1
+            else:
+                if attempt > 3:
+                    PLAYER = None
+                    command = 'Q'
+            PASSWORD = getpass('Password:')
             selected_player = UNI.players[PLAYER]
             cipher_suite = Fernet(selected_player.key)
             unencrypted_password = cipher_suite.decrypt(selected_player.password)
-            attempt=1
-            while not PASSWORD.encode('utf-8') == unencrypted_password and attempt<3:
-                attempt +=1
+            attempt=0
+            while not PASSWORD.encode('utf-8') == unencrypted_password and attempt<=3:
+                attempt += 1
                 print ('Wrong! Try Again!')
-                PASSWORD = input('Password:')
-            if not PASSWORD.encode('utf-8') == unencrypted_password:
+                PASSWORD = getpass('Password:')
+            if not PASSWORD.encode('utf-8') == unencrypted_password or attempt > 3:
                 command = 'Q'
                 PLAYER = None
             else:
                 print('{}: Authorization accepted'.format(PLAYER))
         elif selection.upper() == 'N':
-            while PLAYER not in players:
-                players = UNI.players.keys()
-                PLAYER = input('Enter valid player name: ')
-                if PLAYER in players:
-                    print("You can't use that name!")
-                    PLAYER = None
-                else:
-                    PASSWORD = input('Password:')
-                    key = Fernet.generate_key()       
-                    cipher_suite = Fernet(key)
-                    ciphered_text = cipher_suite.encrypt(PASSWORD.encode('utf-8'))
-                    UNI.create_player(PLAYER, ciphered_text, key)
-                players = UNI.players.keys()
+            (PLAYER,command) = new_player(UNI)
+            
     current_player = None
     if not PLAYER == None:
         current_player = UNI.players[PLAYER]
@@ -129,13 +181,13 @@ def main():
     while command != 'Q':
         neighbors = UNI.graph.neighbors(current_player.current_node)
         print("".join(utils.get_messages(current_player.current_node, current_player, UNI)))
-        clock = datetime.now().strftime('%H:%M:%S')
-        command = input("Command [TL={}]:[{}] [CPQSV#](?=Help) : ".format(clock, current_player.current_node))
-        command = command.upper()
+        command = prompt(current_player.current_node, ['C','P','Q','S','V','#'])
+        #command = input("Command [TL={}]:[{}] [CPQSV#](?=Help) : ".format(clock, current_player.current_node))
+        #command = command.upper()
         if command not in ['C', 'P', 'Q', 'V', '?'] and (command.isnumeric() or utils.is_float(command)):
             warp(current_player, command, UNI.graph.neighbors(current_player.current_node))
         elif command == 'V':
-            view_history()
+            current_player.view_history()
         elif command == 'C':
             cargo(current_player)
         elif command == 'S':
@@ -153,6 +205,9 @@ def main():
     if not current_player == None:
         r.publish('GAMEWORLD', '{} leaves the game...'.format(current_player.name))
         p.unsubscribe()
-        print(UNI.players)
+        for k in UNI.players:
+            p = UNI.players[k]
+            print(p)
+            print(UNI.ships[p.ship])
 
 main()

@@ -4,11 +4,21 @@ from utils import bimodal
 
 
 class commodities:
-    items = []
-    def __init__(self, item_data='data/commodities.json'):
+
+    def __repr__(self):
+        reprstr = '{'        
+        for i in self.items:
+            reprstr += i.__repr__()
+        reprstr += '}'
+        return reprstr
+
+
+
+    def __init__(self, item_data):
         f = open(item_data, 'r')
         items_config_data = json.loads(f.read())['items']
         f.close()
+        self.items = []
         for x in items_config_data:
            attr = items_config_data[x]
            c = commodity(x, (attr["price_distribution_low"]["low"],attr["price_distribution_low"]["high"],attr["price_distribution_low"]["mode"]),
@@ -36,11 +46,11 @@ class commodity:
         self.price_sell = kwargs.get('units', None)
 
     def __repr__(self):
-        return "Commodity('{}', {}, {}, {}, {})".format(self.name,
-                                                        self.price_distribution_low,
-                                                        self.price_distribution_high,
-                                                        self.unit_range_low,
-                                                        self.unit_range_high)
+        return "{}('{}', {}, {}, {}\n)".format(self.name,
+                                             self.price_distribution_low,
+                                             self.price_distribution_high,
+                                             self.unit_range_low,
+                                             self.unit_range_high)
 
     def generate(self):
         self.units = random.randint(self.unit_range_low, self.unit_range_high)

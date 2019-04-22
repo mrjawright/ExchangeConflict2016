@@ -125,7 +125,7 @@ def getstations(target=30, total_systems=1000, stock_volumes=.1):
     mines = 0
     mines_target = 5 + total_systems / 100
     while len(stations) < target:
-        station = spaceport(station = spaceport.stationgen())
+        station = spaceport()
         if superbuys < superbuys_target:
             if 'SUPER BUY' in station.tags:
                 stations.append(station)
@@ -236,6 +236,7 @@ for node in [sector for sector in nodes if isinstance(sector, int)]:
             node = planetary_data['ice_sources'].pop()
         u.node[node]['station'] = new_station
         u.node[node]['fill'] = 'green'
+        print("%s %s" % (node, new_station.tags))
 
 print("Universe created!")
 print("Writing Universe to file...")

@@ -5,8 +5,8 @@
         {
           "price_distribution_low": 
             {
-              "low": 3,
-              "high": 10,
+              "low": 2,
+              "high": 6,
               "mode": 2
             },
           "price_distribution_high": 
@@ -22,8 +22,8 @@
         {
           "price_distribution_low": 
             {
-              "low": 3,
-              "high": 10,
+              "low": 1,
+              "high": 3,
               "mode": 2
             },
           "price_distribution_high": 
@@ -39,8 +39,8 @@
         {
           "price_distribution_low": 
             {
-              "low": 3,
-              "high": 10,
+              "low": 1,
+              "high": 3,
               "mode": 2
             },
           "price_distribution_high": 

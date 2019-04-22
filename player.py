@@ -1,4 +1,5 @@
 from collections import Counter
+from ships import ship
 import uuid
 
 
@@ -13,6 +14,14 @@ class PlayersConfig:
         self.initial_sector_id = initial_sector_id
 
 class Player:
+
+    def view_history(self):
+        print("Jump history: {}".format(self.sectors_visited))
+
+    def __repr__(self):
+        return '%s: %s \n\tCredits: %i\n\tShip:%s\n\tNode:%s' % (
+            self.uuid, self.name, self.wallet, self.ship, self.current_node)
+
     def __init__(self, game, name, password, key, credits, current_node, ship):
         self.uuid = uuid.uuid4()
         self.universe = game
@@ -21,6 +30,6 @@ class Player:
         self.password = password
         self.key = key
         self.wallet = credits
-        self.ship_current = ship
+        self.ship = ship
         self.sectors_visited = Counter()
         self.current_node = current_node
