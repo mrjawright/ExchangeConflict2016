@@ -15,8 +15,12 @@ import spaceport
 import utils
 import server 
 
-def cargo(current_player):
-    print(f"Cargo: {ship['cargo']}\n Wallet: {current_player.wallet}")
+def cargo(current_player, ship):
+    message = 'Cargo:'
+    for i in ship.cargo:
+        message += '\n\t'
+        message += f'{i}: {ship.cargo[i]}'
+    print(f"{message}\nWallet: {current_player.wallet}")
 
 def help():
     print("\n  This is the help menu.  P to trade at a Port, Q to quit, V to view jump history. C to show your wallet and cargo. S to use the scanner on planets and stars.")
@@ -189,7 +193,7 @@ def main():
         elif command == 'V':
             current_player.view_history()
         elif command == 'C':
-            cargo(current_player)
+            cargo(current_player, UNI.ships[current_player.ship])
         elif command == 'S':
             scan(current_player, UNI)
         elif command == 'Q':

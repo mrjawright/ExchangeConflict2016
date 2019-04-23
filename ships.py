@@ -1,6 +1,7 @@
 import json
 import string
 import random
+import commodities
 
 class ShipsConfig:
     def __init__(self, ship_data='data/ships.json'):
@@ -17,6 +18,9 @@ class ship:
 
     def __init__(self, model, uuid,  ship_config):
         self.cargo = {} 
+        available_commodities = commodities.commodities('data/commodities.json').items
+        for commodity in available_commodities:
+            self.cargo[commodity.name] = 0
         self.uuid = uuid
         self.model = model
         n = random.choices([3,3,3,3,4,4,4],k=1)

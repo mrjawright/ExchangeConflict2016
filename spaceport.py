@@ -173,7 +173,7 @@ class spaceport(object):
                     if choice.name == 'holds':
                         ship_limit = hullconfig['holds_max'] - player_ship.holds
                     if choice.name == 'shields':
-                        ship_limit = hullconfig['shields_max'] - player_ship.sheilds
+                        ship_limit = hullconfig['shields_max'] - player_ship.shields
                     max_buy = lambda x: ship_limit if x > ship_limit else x 
                     default_buy = max_buy(wallet_max_buy)
                     if ship_limit <= 0:
