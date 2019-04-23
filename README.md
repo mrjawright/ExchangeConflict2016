@@ -1,5 +1,5 @@
 # ExchangeConflict2016
-
+This project was forked from [jzmiller's ExchangeConflict2016](https://github.com/jzmiller1/ExchangeConflict2016)
 ## Project Summary
 Have you ever played [Trade Wars](https://en.wikipedia.org/wiki/Trade_Wars "Trade Wars Wiki")?  
 

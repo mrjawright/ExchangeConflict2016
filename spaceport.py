@@ -151,11 +151,12 @@ class spaceport(object):
     def dock(self, UNI, player):
         # display commodities
         upgrade_choices, valid_upgrade_inputs = self.show_upgrades(get_inputs=True)
+        upgrade_choices['Q'] = 'Quit'
         shipsconfig = ShipsConfig()
         # do trading
         trade = ''
         while trade.upper() != 'Q':
-            trade = input('Enter your choice or <Q>uit? ')
+            trade = prompt(upgrade_choices)
             player_ship = UNI.ships[player.ship]
             print(f'\nYou have {player.wallet} credits.')
             if trade in valid_upgrade_inputs:
