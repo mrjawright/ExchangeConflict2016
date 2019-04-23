@@ -4,7 +4,7 @@ import random
 import uuid
 from game import GameConfig
 from player import Player
-
+from ships import ship
 
 class Universe:
     def __init__(self, name, graph, config=GameConfig()):
@@ -15,7 +15,6 @@ class Universe:
         self.ships = {}
 
     def create_player(self, name, password, key):
-        """Add a new player to the game"""
         sid = uuid.uuid4()
         self.players[name] = Player(self,
                                     name,
@@ -27,7 +26,6 @@ class Universe:
         self.create_ship('merchant_cruiser', sid)
 
     def reset_player(self, name):
-        """Add a new player to the game"""
         sid = uuid.uuid4()
         player_to_reset = self.players[name]
         self.players[name] = Player(self,
@@ -40,9 +38,8 @@ class Universe:
         self.create_ship('merchant_cruiser', sid)
 
     def create_ship(self, stype, sid):
-        ship = {}
+        ship_config = {}
         for k, v in self.config.ships.types[stype].items():
-            ship[k] = v
-        ship['holds_current'] = ship['holds_min']
-        ship['cargo'] = {}
-        self.ships[sid] = ship
+            ship_config[k] = v
+        player_ship = ship(stype, sid, ship_config)
+        self.ships[sid] = player_ship
