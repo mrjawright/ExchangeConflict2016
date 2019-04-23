@@ -7,13 +7,13 @@
             {
               "low": 2,
               "high": 6,
-              "mode": 2
+              "mode": 3
             },
           "price_distribution_high": 
             {
               "low": 5,
               "high": 12, 
-              "mode": 1
+              "mode": 6
             },
           "unit_range_low": 500,
           "unit_range_high": 3000
@@ -30,7 +30,7 @@
             {
               "low": 5,
               "high": 12, 
-              "mode": 1
+              "mode": 9
             },
           "unit_range_low": 500,
           "unit_range_high": 3000
@@ -47,7 +47,7 @@
             {
               "low": 5,
               "high": 12, 
-              "mode": 1
+              "mode": 9
             },
           "unit_range_low": 500,
           "unit_range_high": 2000

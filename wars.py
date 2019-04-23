@@ -15,6 +15,59 @@ import spaceport
 import utils
 import server 
 
+
+def get_messages(current_node, current_player, UNI):
+    node_data = UNI.graph.node[current_node]
+    neighbors = sorted(UNI.graph.neighbors(current_player.current_node))
+    messages = ['\nSector  : {}\n'.format(current_node), ]
+
+    node_str = str(current_node)
+    if '.' in node_str:
+        info = str(current_node).split('.')
+        parent = int(info[0])
+        body = info[1]
+
+    if node_data.get('system') is not None:
+        star = 'Star    : {} - {} Solar masses\n'.format(
+            node_data['system']['star']['name'],
+            node_data['system']['star']['mass']
+        )
+        messages.append(star)
+        if node_data['system'].get('bodies') is not None:
+
+            bodies = [str(current_node) + '.' +  body['planet_no'] + '-' + body['type']
+                      for body
+                      in node_data['system']['bodies']]
+            messages.append('Bodies  : {}\n'.format(",  ".join(bodies)))
+    else:
+        body = UNI.graph.node[parent]["system"]["bodies"][int(body)-1]
+        messages.append(f'Body    : {body["type"]} Planet - {body["id"]}\n')
+
+    stations = node_data.get('station', None)
+    if stations is not None:
+        #messages.append('Ports   : {}\n'.format("-".join(stations['tags'])))
+        messages.append('Ports   : {}\n'.format("-".join(stations.tags)))
+
+    visited_systems = current_player.sectors_visited.keys()
+    jumps = " - ".join([str(x)
+                        if x in visited_systems
+                        else '({})'.format(str(x))
+                        for x in neighbors
+                        if '.' not in str(x)
+                        ])
+    messages.append('Warps to Sector(s) : {}\n'.format(jumps))
+    return messages
+
+def scanner(current_node, UNI):
+    print("Scanning....")
+    if isinstance(current_node, int):
+        node_data = UNI.graph.node[current_node]
+        print(node_data['system']['star'])
+    elif isinstance(current_node, float):
+        sector, body = str(current_node).split('.')
+        node_data = UNI.graph.node[int(sector)]
+        print(node_data['system']['bodies'][int(body)-1])
+
 def cargo(current_player, ship):
     message = 'Cargo:'
     for i in ship.cargo:
@@ -56,10 +109,6 @@ def port(current_player, UNI):
                 station.trade(UNI, current_player)
     else:
         print("No ports in this sector!")
-
-def scan(current_player, UNI):
-    print("Scanning....")
-    utils.scanner(current_player.current_node, UNI)
 
 def warp(current_player, command, neighbors):
     try:
@@ -184,7 +233,7 @@ def main():
 
     while command != 'Q':
         neighbors = UNI.graph.neighbors(current_player.current_node)
-        print("".join(utils.get_messages(current_player.current_node, current_player, UNI)))
+        print("".join(get_messages(current_player.current_node, current_player, UNI)))
         command = prompt(current_player.current_node, ['C','P','Q','S','V','#'])
         #command = input("Command [TL={}]:[{}] [CPQSV#](?=Help) : ".format(clock, current_player.current_node))
         #command = command.upper()
@@ -195,7 +244,7 @@ def main():
         elif command == 'C':
             cargo(current_player, UNI.ships[current_player.ship])
         elif command == 'S':
-            scan(current_player, UNI)
+            scanner(current_player, UNI)
         elif command == 'Q':
             break
         elif command == 'P':

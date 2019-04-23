@@ -1,0 +1,919 @@
+{  
+  "types":
+    {
+      "1Face":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000  
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+           "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+            "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },
+      "Asteroids":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 100000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe":100000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 100000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 100000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 100000
+            }
+        },
+      "GasDwarf":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            }
+        },
+      "Ice":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },
+      "Jovian":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            }
+        },  
+      "Martian":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },
+      "Rock":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },     
+      "Sub-Jovian":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },
+      "Terrestrial":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },
+      "Venusian":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        },
+      "Water":
+        {
+          "colonists": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "equipment": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 0,
+                  "high": 0,
+                  "mode": 0
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 0,
+                  "high": 0, 
+                  "mode": 0
+                },
+              "loe": 200000
+            },
+          "fuel ore": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "ice": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            },
+          "organics": 
+            {
+              "unit_distribution_low": 
+                {
+                  "low": 1,
+                  "high": 7,
+                  "mode": 2
+                },
+              "unit_distribution_high": 
+                {
+                  "low": 2,
+                  "high": 10, 
+                  "mode": 1
+                },
+              "loe": 200000
+            }
+        }        
+    }
+}
+

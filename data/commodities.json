@@ -11,9 +11,9 @@
             },
           "price_distribution_high": 
             {
-              "low": 2,
+              "low": 3,
               "high": 10, 
-              "mode": 1
+              "mode": 7 
             },
           "unit_range_low": 5000,
           "unit_range_high": 30000
@@ -24,13 +24,13 @@
             {
               "low": 20,
               "high": 90,
-              "mode": 2
+              "mode": 25
             },
           "price_distribution_high": 
             {
               "low": 30,
               "high": 180, 
-              "mode": 1
+              "mode": 160
             },
           "unit_range_low": 500,
           "unit_range_high": 20000
@@ -41,13 +41,13 @@
             {
               "low": 220,
               "high": 625,
-              "mode": 2
+              "mode": 300
             },
           "price_distribution_high": 
             {
               "low": 330,
               "high": 1200, 
-              "mode": 1
+              "mode": 1000
             },
           "unit_range_low": 500,
           "unit_range_high": 20000
@@ -58,13 +58,13 @@
             {
               "low": 50,
               "high": 120,
-              "mode": 2
+              "mode": 65
             },
           "price_distribution_high": 
             {
               "low": 75,
               "high": 180, 
-              "mode": 1
+              "mode": 90
             },
           "unit_range_low": 500,
           "unit_range_high": 20000
