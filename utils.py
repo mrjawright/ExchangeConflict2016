@@ -1,6 +1,8 @@
 import random
 from collections import Counter
 import logging
+import json
+
 
 class Logging(object):
 
@@ -27,6 +29,13 @@ class Logging(object):
             format = '[%(process0d] %(asctime)s) - %(message)s'
         handler.setFormatter(format)
         self.logger.addHandler(handler)
+
+def loadconfig(filename, root):
+    f = open(filename, 'r')
+    types = json.loads(f.read())[root]
+    f.close()
+    return types
+
 
 def bimodal(low1, high1, mode1, low2, high2, mode2):
 #coin flip between the low range and the high range, then

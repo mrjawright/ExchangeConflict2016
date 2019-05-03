@@ -1,0 +1,13 @@
+{
+    "settings":
+      {
+        "total_systems":50,
+        "deadends": 5,
+        "rings": 3,
+        "connectivity": 1,
+        "station_frequency": "frequent",
+        "stock_volumes": "normal",
+        "universe_file": "multiverse/universe_body_nodes_experi.uni",
+        "save_file": "multiverse/UNISAVE.pkl"
+      }
+}

@@ -1,6 +1,5 @@
-import json
 import random
-from utils import bimodal
+import utils
 
 
 class commodities:
@@ -12,12 +11,8 @@ class commodities:
         reprstr += '}'
         return reprstr
 
-
-
     def __init__(self, item_data):
-        f = open(item_data, 'r')
-        items_config_data = json.loads(f.read())['items']
-        f.close()
+        items_config_data = utils.loadconfig(item_data, 'items')
         self.items = []
         for x in items_config_data:
            attr = items_config_data[x]
@@ -42,8 +37,8 @@ class commodity:
         self.unit_range_low = unit_range_low
         self.unit_range_high = unit_range_high
         self.units = kwargs.get('units', None)
-        self.price_buy = kwargs.get('units', None)
-        self.price_sell = kwargs.get('units', None)
+        self.price_buy = kwargs.get('price_buy', None)
+        self.price_sell = kwargs.get('price_sell', None)
 
     def __repr__(self):
         return "{}('{}', {}, {}, {}\n)".format(self.name,
@@ -54,8 +49,8 @@ class commodity:
 
     def generate(self):
         self.units = random.randint(self.unit_range_low, self.unit_range_high)
-        x = round(bimodal(*self.price_distribution_low, *self.price_distribution_high), 0)
-        y = round(bimodal(*self.price_distribution_high, *self.price_distribution_low), 0)
+        x = round(utils.bimodal(*self.price_distribution_low, *self.price_distribution_high), 0)
+        y = round(utils.bimodal(*self.price_distribution_high, *self.price_distribution_low), 0)
         self.price_buy = min(x, y)
         self.price_sell = max(x, y)
 

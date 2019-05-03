@@ -4,16 +4,13 @@ import os
 import subprocess
 import uuid
 
+import systems
 
 def get_system_data(BASE_DIR,
                     STARGEN_PATH,
                     STARGEN_EXE_PATH,
                     STARGEN_DATA_PATH,
                     STARGEN_DATA_FILE):
-    """Generate a system and read the data from the resulting csv
-
-
-    """
     seed = random.randint(0, 10000000)
     stargen_command = " ".join([os.path.join(BASE_DIR, STARGEN_EXE_PATH),
                                 "-s{}".format(seed), # Looks like I need to provide a seed, if I call this too fast it gets the same seed inside stargen
@@ -48,13 +45,11 @@ def get_system_data(BASE_DIR,
 
 
 def parse_system(data):
-    """Parses a stargen system csv file
-
-    returns a dict with star and bodies keys
-
-    """
+    #Parses a stargen system csv file
+    #returns a dict with star and bodies keys
+    planetsconfig = systems.PlanetsConfig()
     data = [row.strip() for row in data]
-    system = {}
+    star = []
     bodies = []
     if len(data) == 0:
        raise Exception("No data returned") 
@@ -68,15 +63,15 @@ def parse_system(data):
                     [col.strip().replace("'", "")
                      for col in data[1].split(',')])
 
-    system['star'] = dict([col for col in star_data])
-
+    star = dict([col for col in star_data])
     # add an id
-    system['star']['id'] = uuid.uuid4()
+    star['id'] = uuid.uuid4()
 
     #  Remove WinStarGen/StarGen.exe from star name
-    system['star']['name'] = system['star']['name'].split(' ')[1]
+    star['name'] = star['name'].split(' ')[1]
 
     for body in data[3:]:
+        planet = None
         body_data = zip([col.strip().replace("'", "")
                          for col in headers_planet.split(',')],
                         [col.strip().replace("'", "")
@@ -85,12 +80,15 @@ def parse_system(data):
 
         # Remove WinStarGen/StarGen.exe and Star name from body name
         body['planet_no'] = body['planet_no'].split(' ')[2]
+        body['name'] = f"{star['name']}-{body['planet_no']}"
         # add an id
         body['id'] = uuid.uuid4()
-        bodies.append(body)
-
-    system['bodies'] = bodies
-
+        if body['type'] in planetsconfig.resource_config_data:
+            planetconfig = planetsconfig.resource_config_data[body['type']]
+            planet = systems.planet(body, planetconfig)
+        if planet != None:
+            bodies.append(planet)
+    system = systems.system(systems.star(star), bodies)
     return system
 
 

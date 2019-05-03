@@ -1,14 +1,12 @@
-import json
 import string
 import random
+import utils
 import commodities
+
 
 class ShipsConfig:
     def __init__(self, ship_data='data/ships.json'):
-        f = open(ship_data, 'r')
-        self.types = json.loads(f.read())['types']
-        f.close()
-
+        self.types = utils.loadconfig(ship_data, 'types')
 
 class ship:
 

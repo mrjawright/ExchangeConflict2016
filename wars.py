@@ -15,39 +15,105 @@ import spaceport
 import utils
 import server 
 
+def dump(universe):
+    for node in universe.graph.node:
+        print(f'Node: {node}')
+        print("Neighbors:")
+        for neighbor_node in sorted(universe.graph.neighbors(node)):
+            print(f"\t{neighbor_node}")
 
-def get_messages(current_node, current_player, UNI):
-    node_data = UNI.graph.node[current_node]
-    neighbors = sorted(UNI.graph.neighbors(current_player.current_node))
-    messages = ['\nSector  : {}\n'.format(current_node), ]
+def sector_menu_help():
+    print("\nC to show your wallet and cargo\nL to land on a planet\nP to trade at a Port\nQ to quit\nS to use the scanner on planets and stars\nV to view jump history\nUse the number to warp to another sector or land on a planet.")
+
+def station_menu_help():
+    print("\nD to dock at a hangar\nT to trade at the port\nQ to quit and return to the sector\n")
+
+def planet_menu_help():
+    #print("\nA to allocate colonists to resources\nE to establish a colony\nL to leave cargo\nQ to quit\nT to take resources\n")
+    print("\nC for the colony menu\nP to populate the planet with colonists\nQ to quit\n")
+
+def prompt(node, choices):
+    clock = datetime.now().strftime('%H:%M:%S')
+    menu = ''
+    for c in choices:
+        menu+=c
+    selection= input("Command [TL={}]:[{}] [{}](?=Help) : ".format(clock,node,menu))
+    return selection.upper()
+
+def save(current_player, UNI):
+    if not current_player == None:
+        UNI.redis.publish('GAMEWORLD', '{} leaves the game...'.format(current_player.name))
+        UNI.pubsub.unsubscribe()
+        UNI.pubsub = None
+        UNI.redis = None
+        for k in UNI.players:
+            p = UNI.players[k]
+            print(f"Player:{p}")
+            print(f"\tShip:{UNI.ships[p.ship]}")
+    pickle.dump(UNI, open(UNI.config.game_config_data['save_file'], 'wb'))
+    raise SystemExit
+
+def get_messages(current_player, UNI):
+    #print(f'get_messages({current_player}, {UNI})')
+    options = []
+    messages = []
+    header_message = ""
+    current_node = current_player.current_node
 
     node_str = str(current_node)
-    if '.' in node_str:
+    node_data = UNI.graph.node[current_node]
+
+    exit_prompt = "Warps to Sector(s) : "
+    
+    if node_data.get('system') is not None:
+        header_message = f"\nSector  : {current_node}\n"
+        system_name = node_data['system'].name
+        star = 'Star    : {} - {} Solar masses\n'.format(
+            node_data['system'].star.name,
+            node_data['system'].star.mass
+        )
+        messages.append(header_message)
+        messages.append(star)
+        system = node_data['system']
+        if node_data['system'].planets is not None:
+            bodies = [body.name + ' (' + body.type + ')'
+                      for body
+                      in node_data['system'].planets]
+            messages.append('Bodies  : {}\n'.format(",  ".join(bodies)))
+        options = ['C','L','P','Q','S','V','#']
+    
+        stations = node_data.get('station', None)
+        if stations is not None:
+            messages.append('Ports   : {}\n'.format("-".join(stations.tags)))
+    elif '.' in node_str:
         info = str(current_node).split('.')
         parent = int(info[0])
         body = info[1]
+        #Land
+        body_info = UNI.graph.node[parent]["system"].planets[int(body)-1]
+        star = UNI.graph.node[parent]["system"].star.name
 
-    if node_data.get('system') is not None:
-        star = 'Star    : {} - {} Solar masses\n'.format(
-            node_data['system']['star']['name'],
-            node_data['system']['star']['mass']
-        )
-        messages.append(star)
-        if node_data['system'].get('bodies') is not None:
+        header_message = f"\nPlanet  : {body_info.name}\n"
+        messages.append(header_message)
 
-            bodies = [str(current_node) + '.' +  body['planet_no'] + '-' + body['type']
-                      for body
-                      in node_data['system']['bodies']]
-            messages.append('Bodies  : {}\n'.format(",  ".join(bodies)))
-    else:
-        body = UNI.graph.node[parent]["system"]["bodies"][int(body)-1]
-        messages.append(f'Body    : {body["type"]} Planet - {body["id"]}\n')
+        messages.append(f'You\'ve landed on the {body_info.type} planet {body_info.name}\n')
+        inventory_message = 'There are '
+        use_and = False
+        has_inventory = False
+        for i in body_info.inventory:
+            if body_info.inventory[i] is not None and body_info.inventory[i] > 0:
+                if has_inventory == False:
+                    has_inventory = True
+                if use_and:
+                    inventory_message.append(' and ')
+                inventory_message.append(f'{body_info.inventory[i]} holds of {i}')
+                use_and = True
+        if has_inventory:
+            messages.append(inventory_message)
+        exit_prompt = "Take off and return to sector "
+        options = ['C','P','Q','?']
 
-    stations = node_data.get('station', None)
-    if stations is not None:
-        #messages.append('Ports   : {}\n'.format("-".join(stations['tags'])))
-        messages.append('Ports   : {}\n'.format("-".join(stations.tags)))
-
+    neighbors = sorted(UNI.graph.neighbors(current_player.current_node))
     visited_systems = current_player.sectors_visited.keys()
     jumps = " - ".join([str(x)
                         if x in visited_systems
@@ -55,8 +121,11 @@ def get_messages(current_node, current_player, UNI):
                         for x in neighbors
                         if '.' not in str(x)
                         ])
-    messages.append('Warps to Sector(s) : {}\n'.format(jumps))
-    return messages
+    messages.append(f"{exit_prompt} {jumps}\n")
+    print("".join(messages))
+    command = prompt(current_player.current_node, options)
+    #print(f"return ({command.upper()}, {options})")
+    return (command.upper(), options)
 
 def scanner(current_node, UNI):
     print("Scanning....")
@@ -75,53 +144,114 @@ def cargo(current_player, ship):
         message += f'{i}: {ship.cargo[i]}'
     print(f"{message}\nWallet: {current_player.wallet}")
 
-def help():
-    print("\n  This is the help menu.  P to trade at a Port, Q to quit, V to view jump history. C to show your wallet and cargo. S to use the scanner on planets and stars.")
 
-def prompt(node, choices):
-    clock = datetime.now().strftime('%H:%M:%S')
-    menu = ''
-    for c in choices:
-        menu+=c
-    selection= input("Command [TL={}]:[{}] [{}](?=Help) : ".format(clock,node,menu))
-    return selection.upper()
-
+def land(current_player, UNI):
+    node = current_player.current_node
+    node_str = str(node)
+    node_data = UNI.graph.node[node]
+    options = []
+    bodies = []
+    if node_data.get('system') is not None:
+        for body in node_data['system'].planets:
+            bodies.append(str(node)+'.'+body.planet_no+': '+body.name+' ('+body.type+')')
+            options.append(str(node)+'.'+body.planet_no)
+        for b in bodies:
+            print(b)
+        command = ''
+        attempt=0
+        while command not in options and attempt<3:
+            command = input(f"Which planet:\n")
+            attempt += 1
+        if command in options:
+            warp(current_player, command, UNI.graph.neighbors(current_player.current_node))
+            command = ''
+            options = []
+            while not command == 'Q':
+                (command, options) = get_messages(current_player,UNI)
+                if command not in options and (command.isnumeric() or utils.is_float(command)):
+                    warp(current_player, command, UNI.graph.neighbors(current_player.current_node))
+                elif command == '?':
+                    planet_menu_help()
+                elif command == 'C':
+                    print("Colony menu...")
+                    break
+                elif command == 'P':
+                    print("Populate planet with colonists...")
+                    break
+                elif command == 'Q':
+                    save(current_player, UNI)
+                    break
+        #else:
+        #    warp(current_player, current_player.current_node, UNI.graph.neighbors(current_player.current_node))
+    else:
+        print("No suitable place to land!")
 
 def port(current_player, UNI):
     node_data = UNI.graph.node[current_player.current_node]
     station = node_data.get('station', None)
     message = ''
     if station is not None:
-        choices = ['T','Q']
+        options = ['T','Q','?']
         t_message = "\n<T>rade at this Port"
         if station.has_hangar:
-            choices = ['D','T','Q']
+            options.insert(0,'D')
             message += "\n<D>ock to buy upgrades"
         message += t_message
         message += "\n<Q>uit, nevermind"
-        selection = ''
-        while  not selection.upper() == 'Q' :
+        option = ''
+        while  option.upper() != 'Q' :
             print(message)
-            selection = prompt(current_player.current_node, choices)
-            if selection.upper() == 'D':
-                station.dock(UNI, current_player)
-            if selection.upper() == 'T':
-                station.trade(UNI, current_player)
+            option = prompt(current_player.current_node, options)
+            if option.upper() == 'D':
+               station.dock(UNI, current_player)
+            if option.upper() == 'T':
+               station.trade(UNI, current_player)
+            if option == '?':
+                station_menu_help()
     else:
         print("No ports in this sector!")
 
 def warp(current_player, command, neighbors):
     try:
-        target_node = int(command)
+        destination= int(command)
     except ValueError:
-         target_node = float(command)
-    if target_node in neighbors:
-        current_player.current_node = target_node
-        #if not target_node in current_player.sectors_visited:
-            #current_player.experience += 1
+        destination= float(command)
+    if destination in neighbors:
+        current_player.current_node = destination
         current_player.sectors_visited.update({current_player.current_node: 1})
     else:
-        print("{} is an invalid jump selection...try again!".format(target_node))
+        print(f"{command} is an invalid jump selection...try again!")
+
+def login_player(universe):
+    PLAYER = ""
+    PASSWORD = ""
+    command = ""
+    attempt=0
+    players = universe.players
+
+    while PLAYER not in players and attempt <3:
+        PLAYER = input('Enter valid player name: ')
+        attempt += 1
+    else:
+        if  PLAYER not in players:
+            PLAYER = None
+            command = 'Q'
+        else:
+            selected_player = universe.players[PLAYER]
+            cipher_suite = Fernet(selected_player.key)
+            unencrypted_password = cipher_suite.decrypt(selected_player.password)
+            attempt=0
+            while not PASSWORD.encode('utf-8') == unencrypted_password and attempt < 3:
+                PASSWORD = getpass('Password:')
+                attempt += 1
+                if not PASSWORD.encode('utf-8') == unencrypted_password:
+                    print ('Wrong! Try Again!')
+            if not PASSWORD.encode('utf-8') == unencrypted_password:
+                command = 'Q'
+                PLAYER = None
+            else:
+                print(f'{PLAYER}: Authorization accepted')
+    return PLAYER, command
 
 def new_player(universe):
     PLAYER = ""
@@ -165,102 +295,83 @@ def new_player(universe):
 
 def main():
 # MAIN
-    U = nx.readwrite.read_gpickle('multiverse/universe_body_nodes_experi.uni')
-    rserver = server.redis_server()
-    r = redis.StrictRedis(host=rserver.HOST,
-                          port=rserver.PORT,
-                          password=rserver.PASSWORD)
-    p = r.pubsub()
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    game_config_data = utils.loadconfig('data/game_config.json', 'settings')
+    if os.path.exists(os.path.join(BASE_DIR,game_config_data['universe_file'])): 
+        U = nx.readwrite.read_gpickle(game_config_data['universe_file'])
 
-    CENTRALITY_NODE = {v: k
-                       for k, v
-                       in nx.get_node_attributes(U, 'name').items()}['Centrality']
+        rserver = server.redis_server()
+        r = redis.StrictRedis(host=rserver.HOST,
+                              port=rserver.PORT,
+                              password=rserver.PASSWORD)
+        p = r.pubsub()
 
-    UNI_PATH = 'multiverse/UNISAVE.pkl'
+        CENTRALITY_NODE = {v: k
+                           for k, v
+                           in nx.get_node_attributes(U, 'name').items()}['Centrality']
 
-    if os.path.isfile(UNI_PATH):
-        UNI = pickle.load(open(UNI_PATH, 'rb'))
-    else:
-        UNI = Universe('New Game', U, GameConfig(PlayersConfig(CENTRALITY_NODE)))
- 
-    if len(UNI.players) == 0:
-        (PLAYER,command) = new_player(UNI)
-    else:
-        selection = "" 
-        PLAYER = None
-        PASSWORD = None
-        players = UNI.players.keys()
-        attempt=0
-        while selection.upper() not in ['N', 'E'] and attempt<=3:
-            selection = input("(N)ew player or (E)xisting player? ")
-            attempt += 1
+        
+        UNI_PATH = game_config_data['save_file']
+        if os.path.isfile(UNI_PATH):
+            UNI = pickle.load(open(UNI_PATH, 'rb'))
         else:
-            if attempt > 3:
-                PLAYER = None
-                command = 'Q'
-        if selection.upper() == 'E':
+            UNI = Universe('New Game', U, GameConfig(PlayersConfig(CENTRALITY_NODE)))
+
+        UNI.redis = r
+        UNI.pubsub = p 
+        if len(UNI.players) == 0:
+            (PLAYER,command) = new_player(UNI)
+        else:
+            selection = "" 
+            PLAYER = None
+            PASSWORD = None
+            players = UNI.players.keys()
             attempt=0
-            while PLAYER not in players and attempt <=3:
-                PLAYER = input('Enter valid player name: ')
+            while selection.upper() not in ['N', 'E'] and attempt<3:
+                selection = input("(N)ew player or (E)xisting player? ")
                 attempt += 1
             else:
-                if attempt > 3:
+                if attempt == 3:
                     PLAYER = None
                     command = 'Q'
-            PASSWORD = getpass('Password:')
-            selected_player = UNI.players[PLAYER]
-            cipher_suite = Fernet(selected_player.key)
-            unencrypted_password = cipher_suite.decrypt(selected_player.password)
-            attempt=0
-            while not PASSWORD.encode('utf-8') == unencrypted_password and attempt<=3:
-                attempt += 1
-                print ('Wrong! Try Again!')
-                PASSWORD = getpass('Password:')
-            if not PASSWORD.encode('utf-8') == unencrypted_password or attempt > 3:
-                command = 'Q'
-                PLAYER = None
-            else:
-                print('{}: Authorization accepted'.format(PLAYER))
-        elif selection.upper() == 'N':
-            (PLAYER,command) = new_player(UNI)
+            if selection.upper() == 'E':
+                (PLAYER,command) = login_player(UNI)
+            elif selection.upper() == 'N':
+                (PLAYER,command) = new_player(UNI)
             
-    current_player = None
-    if not PLAYER == None:
-        current_player = UNI.players[PLAYER]
-        p.subscribe('GAMEWORLD')
-        r.publish('GAMEWORLD', '{} joins the game... {}'.format(current_player.name, uuid.uuid4()))
-        command = None
+        current_player = None
+        if not PLAYER == None:
+            current_player = UNI.players[PLAYER]
+            p.subscribe('GAMEWORLD')
+            r.publish('GAMEWORLD', '{} joins the game... {}'.format(current_player.name, uuid.uuid4()))
+            command = None
 
-    while command != 'Q':
-        neighbors = UNI.graph.neighbors(current_player.current_node)
-        print("".join(get_messages(current_player.current_node, current_player, UNI)))
-        command = prompt(current_player.current_node, ['C','P','Q','S','V','#'])
-        #command = input("Command [TL={}]:[{}] [CPQSV#](?=Help) : ".format(clock, current_player.current_node))
-        #command = command.upper()
-        if command not in ['C', 'P', 'Q', 'V', '?'] and (command.isnumeric() or utils.is_float(command)):
-            warp(current_player, command, UNI.graph.neighbors(current_player.current_node))
-        elif command == 'V':
-            current_player.view_history()
-        elif command == 'C':
-            cargo(current_player, UNI.ships[current_player.ship])
-        elif command == 'S':
-            scanner(current_player, UNI)
-        elif command == 'Q':
-            break
-        elif command == 'P':
-            port(current_player, UNI)
-        elif command == '?':
-            help()
-        else:
-            print("Invalid command!")
-    
-    pickle.dump(UNI, open(UNI_PATH, 'wb'))
-    if not current_player == None:
-        r.publish('GAMEWORLD', '{} leaves the game...'.format(current_player.name))
-        p.unsubscribe()
-        for k in UNI.players:
-            p = UNI.players[k]
-            print(p)
-            print(UNI.ships[p.ship])
+        while command != 'Q':
+            neighbors = UNI.graph.neighbors(current_player.current_node)
+            options = []
+            (command,options) = get_messages(current_player, UNI)
+            if command not in options and (command.isnumeric() or utils.is_float(command)):
+                warp(current_player, command, UNI.graph.neighbors(current_player.current_node))
+            elif command == 'C':
+                cargo(current_player, UNI.ships[current_player.ship])
+            elif command == 'L':
+                land(current_player, UNI)
+            elif command == 'P':
+                port(current_player, UNI)
+            elif command == 'Q':
+                save(current_player, UNI)
+                break
+            elif command == 'S':
+                scanner(current_player, UNI)
+            elif command == 'V':
+                current_player.view_history()
+            elif command == 'DUMP':
+                dump(UNI)
+            elif command == '?':
+                sector_menu_help()
+            else:
+                print("Invalid command!")
+    else:
+        print("No universe file found. Run bigbang.py")
 
 main()

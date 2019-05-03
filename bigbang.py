@@ -4,7 +4,7 @@ import random
 import time
 import uuid
 import pickle
-
+import utils
 import networkx as nx
 
 from stargen import get_system_data, parse_system
@@ -177,7 +177,15 @@ STARGEN_EXE_PATH = os.path.join(STARGEN_PATH,STARGEN_EXE)
 STARGEN_DATA_PATH = os.path.join(STARGEN_PATH,'html')
 
 print("Generating Universe...")
-u, s = universe(50, 10, 3, 1, 'frequent', 'normal')
+game_config_data = utils.loadconfig('data/game_config.json', 'settings')
+total_systems = game_config_data['total_systems']
+deadends = game_config_data['deadends']
+rings = game_config_data['rings']
+connectivity = game_config_data['connectivity'] 
+station_frequency = game_config_data['station_frequency']
+stock_volumes =  game_config_data['stock_volumes']
+
+u, s = universe(total_systems, deadends, rings, connectivity, station_frequency, stock_volumes)
 
 print("Generate Planetary Systems...")
 # observed system types: 'Rock', 'Terrestrial', 'GasDwarf', 'Sub-Jovian', 'Jovian', 'Ice', 'Venusian', 'Martian', '1Face', 'Water', 'Asteroids'
@@ -193,11 +201,10 @@ for node in nodes:
 print("Generate links from sectors to planetary bodies...")
 planet_types = {}
 for node in list(u.nodes()):
-    for body in u.node[node]['system']['bodies']:
-        body_node_label = float(str(node) + '.' + body['planet_no'])
-        #u.add_node(body_node_label)
+    for body in u.node[node]['system'].planets:
+        body_node_label = float(str(node) + '.' + body.planet_no)
         u.add_edge(node, body_node_label)
-        btype = body['type']
+        btype = body.type
         if btype not in planet_types:
             planet_types[btype] = [body_node_label]
         else:
@@ -217,6 +224,9 @@ except KeyError as ke:
 	raise ke
 except:
 	print("Unexpected error:", sys.exc_info()[0])
+
+
+
 
 planetary_data = {}
 
@@ -240,16 +250,21 @@ for node in [sector for sector in nodes if isinstance(sector, int)]:
 
 print("Universe created!")
 print("Writing Universe to file...")
-if not os.path.exists(os.path.join(BASE_DIR,'multiverse')):
-	os.mkdir(os.path.join(BASE_DIR,'multiverse'))
-nx.readwrite.write_gpickle(u, 'multiverse/universe_body_nodes_experi.uni')
+
+if not os.path.exists(os.path.join(BASE_DIR,game_config_data['universe_file'])):
+    dirname = os.path.dirname(game_config_data['universe_file'])
+    if not os.path.exists(os.path.join(BASE_DIR,dirname)):
+    	os.mkdir(os.path.join(BASE_DIR,dirname))
+nx.readwrite.write_gpickle(u, game_config_data['universe_file'])
 print("Resetting players")
-UNI_PATH = 'multiverse/UNISAVE.pkl'
+UNI_PATH = game_config_data['save_file']
 if os.path.isfile(UNI_PATH):
     UNI = pickle.load(open(UNI_PATH, 'rb'))
     for key in UNI.players.keys():
         UNI.reset_player(key)    
-        pickle.dump(UNI, open(UNI_PATH, 'wb'))
+    UNI.graph = u
+    pickle.dump(UNI, open(UNI_PATH, 'wb'))
+    
 print("Complete!")
 
 

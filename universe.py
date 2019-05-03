@@ -1,5 +1,4 @@
 from collections import Counter
-import json
 import random
 import uuid
 from game import GameConfig
@@ -10,6 +9,8 @@ class Universe:
     def __init__(self, name, graph, config=GameConfig()):
         self.name = name
         self.graph = graph
+        self.redis = None
+        self.pubsub = None
         self.config = config
         self.players = {}
         self.ships = {}

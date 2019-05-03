@@ -17,7 +17,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution": 
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -33,7 +38,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000  
+              "loe_distribution":  
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -49,7 +59,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-           "loe": 200000
+           "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -65,7 +80,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-            "loe": 200000
+            "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -81,7 +101,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Asteroids":
@@ -100,7 +125,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 100000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -116,7 +146,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe":100000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -132,7 +167,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 100000
+              "loe_distribution": 
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -148,7 +188,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 100000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -164,7 +209,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 100000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "GasDwarf":
@@ -183,7 +233,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -199,7 +254,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -215,7 +275,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -231,7 +296,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -247,7 +317,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Ice":
@@ -266,7 +341,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -282,7 +362,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -298,7 +383,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -314,7 +404,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -330,7 +425,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Jovian":
@@ -349,7 +449,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -365,7 +470,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -381,7 +491,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -397,7 +512,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -413,7 +533,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },  
       "Martian":
@@ -432,7 +557,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -448,7 +578,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -464,7 +599,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -480,7 +620,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -496,7 +641,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Rock":
@@ -515,7 +665,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -531,7 +686,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -547,7 +707,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -563,7 +728,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -579,7 +749,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },     
       "Sub-Jovian":
@@ -598,7 +773,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution": 
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -614,7 +794,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -630,7 +815,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -646,7 +836,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -662,7 +857,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Terrestrial":
@@ -681,7 +881,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -697,7 +902,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -713,7 +923,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -729,7 +944,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -745,7 +965,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Venusian":
@@ -764,7 +989,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -780,7 +1010,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -796,7 +1031,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -812,7 +1052,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -828,7 +1073,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         },
       "Water":
@@ -847,7 +1097,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution": 
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "equipment": 
             {
@@ -863,7 +1118,12 @@
                   "high": 0, 
                   "mode": 0
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "fuel ore": 
             {
@@ -879,7 +1139,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "ice": 
             {
@@ -895,7 +1160,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             },
           "organics": 
             {
@@ -911,7 +1181,12 @@
                   "high": 10, 
                   "mode": 1
                 },
-              "loe": 200000
+              "loe_distribution":
+                {
+                    "low": 1,
+                    "high": 1,
+                    "mode": 1
+                }
             }
         }        
     }

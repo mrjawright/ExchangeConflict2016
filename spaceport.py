@@ -5,7 +5,8 @@ from ships import ShipsConfig
 from ships import ship
 from random import random
 import config
-import json
+import utils
+
 
 def prompt(choices):
     clock = datetime.now().strftime('%H:%M:%S')
@@ -237,9 +238,7 @@ class spaceport(object):
 
 
     def gettags(self):
-        f = open('data/station_tags.json', 'r')
-        tags_config_data = json.loads(f.read())['tags']
-        f.close()
+        tags_config_data = utils.loadconfig('data/station_tags.json', 'tags')
         self.tags=[]
         for key in tags_config_data:
             use_tag = True
@@ -291,24 +290,21 @@ class spaceport(object):
         self.items = items
         self.gettags()
         if "PRODUCTION" in self.tags:
-            #if random()>0.5:
-            if 1>0.5:
+            if random()>0.5:
                 hangar_type="SCRAPYARD"
                 self.has_hangar = True
                 upgrades = station['upgrades']
                 for item in upgrades:
                     upgrades[item].generate()
         if "ORBITAL HYDROPONICS" in self.tags:
-            #if random()>0.75 and not station['has_hangar']:
-            if 1>0.75 and not self.has_hangar:
+            if random()>0.75 and not self.has_hangar:
                 hangar_type = "GARAGE"
                 self.has_hangar = True
                 upgrades = station['upgrades']
                 for item in upgrades:
                     upgrades[item].generate()
         if "ICE MINING" in self.tags:
-            #if random()>0.66 and not station['has_hangar']:
-            if 1>0.66 and not self.has_hangar:
+            if random()>0.66 and not self.has_hangar:
                 hangar_type = "MAINTENANCE"
                 self.has_hangar = True
                 upgrades = station['upgrades']
