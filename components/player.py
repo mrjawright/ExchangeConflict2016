@@ -1,5 +1,5 @@
 from collections import Counter
-from ships import ship
+from components.ships import ship
 import uuid
 
 

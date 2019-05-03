@@ -1,10 +1,9 @@
-from commodities import commodity
-from commodities import commodities
+from components.commodities import commodity
+from components.commodities import commodities
 from datetime import datetime
-from ships import ShipsConfig
-from ships import ship
+from components.ships import ShipsConfig
+from components.ships import ship
 from random import random
-import config
 import utils
 
 

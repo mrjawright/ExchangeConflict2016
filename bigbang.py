@@ -8,7 +8,7 @@ import utils
 import networkx as nx
 
 from stargen import get_system_data, parse_system
-from spaceport import spaceport
+from components.spaceport import spaceport
 
 def gen(total_systems=20, deadends=0, rings=0, connectivity=1):
     G = nx.Graph()

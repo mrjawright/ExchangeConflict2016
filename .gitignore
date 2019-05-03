@@ -8,7 +8,7 @@ StarGen/Source/*.o
 requirements.old
 # PyCharm
 .idea/
-
+components/__pycache__/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

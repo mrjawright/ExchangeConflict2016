@@ -1,9 +1,9 @@
 from collections import Counter
 import random
 import uuid
-from game import GameConfig
-from player import Player
-from ships import ship
+from components.game import GameConfig
+from components.player import Player
+from components.ships import ship
 
 class Universe:
     def __init__(self, name, graph, config=GameConfig()):

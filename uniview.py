@@ -1,7 +1,7 @@
 import networkx as nx
 from networkx_viewer import Viewer
-
-u = nx.readwrite.read_gpickle('multiverse/universe_body_nodes_experi.uni')
+game_config_data = utils.loadconfig('data/game_config.json', 'settings')
+u = nx.readwrite.read_gpickle(game_config_data['universe_file'])
 
 app = Viewer(u)
 app.mainloop()

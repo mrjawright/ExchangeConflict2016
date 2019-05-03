@@ -1,7 +1,7 @@
 import string
 import random
 import utils
-import commodities
+import components.commodities as commodities
 
 
 class ShipsConfig:

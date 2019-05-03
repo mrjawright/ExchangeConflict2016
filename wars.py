@@ -7,11 +7,10 @@ from getpass import getpass
 import networkx as nx
 import redis
 from random import random
-from universe import Universe
-from player import PlayersConfig
-from game import GameConfig
-import spaceport
-#from trade import trade
+from components.universe import Universe
+from components.player import PlayersConfig
+from components.game import GameConfig
+import components.spaceport
 import utils
 import server 
 

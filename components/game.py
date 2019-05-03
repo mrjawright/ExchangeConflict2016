@@ -1,5 +1,5 @@
-from player import PlayersConfig
-from ships  import ShipsConfig
+from components.player import PlayersConfig
+from components.ships  import ShipsConfig
 import utils
 
 class GameConfig:

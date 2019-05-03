@@ -4,7 +4,7 @@ import os
 import subprocess
 import uuid
 
-import systems
+import components.systems as systems
 
 def get_system_data(BASE_DIR,
                     STARGEN_PATH,
