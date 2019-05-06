@@ -12,7 +12,12 @@ class commodities:
         return reprstr
 
     def __init__(self, item_data):
-        items_config_data = utils.loadconfig(item_data, 'items')
+        items_config_data = None
+        if item_data is None:
+            items_config_data = utils.loadconfig(item_data, 'items')
+        else:
+            items_config_data = item_data
+    
         self.items = []
         for x in items_config_data:
            attr = items_config_data[x]
